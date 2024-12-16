@@ -1,0 +1,27 @@
+.message-row {
+    width: 100%;
+}
+
+.message-container {
+    background: white;
+    border: 1px black solid;
+    border-radius: 5px;
+
+    width: fit-content;
+
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+    cursor: pointer;
+}
+
+.message-container .message-header {
+    width: 100%;
+    background-color: black;
+    color: white;
+    padding: 5px;
+}
+
+.message-container .message-body {
+    padding: 15px;
+}
