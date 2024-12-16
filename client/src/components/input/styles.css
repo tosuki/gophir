@@ -3,7 +3,7 @@
     min-height: 60px;
 
     display: flex;
-    
+
     padding-top: 10px;
     padding-left: 10px;
     padding-right: 10px;
@@ -23,7 +23,7 @@
 }
 
 .input-container .button:hover {
-    background-color: #F5F5F5;
+    background-color: green;
 }
 
 .input-container .input-element {

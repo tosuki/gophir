@@ -4,7 +4,7 @@ import MessageComponent from "./message/message"
 
 import "./styles.css"
 
-export default function MessagesComponent({ messages }: { messages: Message[] }) {
+export default function MessagesComponent({ messages }: { messages: (Message & { isMine?: boolean })[] }) {
     return (
         <div className="messages-container">
             { messages.map((message) => {
@@ -13,6 +13,7 @@ export default function MessagesComponent({ messages }: { messages: Message[] })
                         authorId={ message.authorId }
                         content={ message.content }
                         createdAt={ message.createdAt }
+                        isMine={ message.isMine }
                     />
                 )
             })}

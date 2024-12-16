@@ -1,5 +1,15 @@
 .message-row {
     width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.start {
+    justify-content: start;
+}
+
+.end {
+    justify-content: end;
 }
 
 .message-container {
@@ -12,7 +22,7 @@
     margin-top: 10px;
     margin-bottom: 10px;
 
-    cursor: pointer;
+    
 }
 
 .message-container .message-header {
@@ -20,6 +30,13 @@
     background-color: black;
     color: white;
     padding: 5px;
+    cursor: pointer;
+
+    transition: background-color .5s;
+}
+
+.message-container .message-header:hover {
+    background-color: rgb(54, 54, 54);
 }
 
 .message-container .message-body {
