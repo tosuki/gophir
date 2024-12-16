@@ -15,7 +15,7 @@ export default class ConnectionListener extends Listener {
         }
 
         socket.emit("connected", connData.data)
-        logger.warn(`User ${connData.data.user.id} connected (socketId: ${connData.data.user.data.socketId})`)
+        logger.warn(`User ${connData.data.user.id} connected (socketId: ${connData.data.user.socketId})`)
         
         return { data: connData.data.user }
     }

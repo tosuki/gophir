@@ -21,7 +21,7 @@ export default function ChatComponent() {
             setMessages(data.messages.map((message) => {
                 return {
                     ...message,
-                    isMine: (message.authorId === user.id)
+                    isMine: (message.authorId == user.id)
                 }
             }))
             toast.info(`Connected to the server as User ${data.user.id}`)

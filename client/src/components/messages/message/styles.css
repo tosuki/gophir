@@ -41,4 +41,5 @@
 
 .message-container .message-body {
     padding: 15px;
+    line-break: auto;
 }
