@@ -6,6 +6,7 @@ import { Result } from "src/lib/result"
 export interface MessageRepository {
     save(message: string, userId: number)
     getById(id: number): Result<Message>
+    getAll(): Result<Message[]>
 }
 
 export default class MessageRepositoryImpl extends Repository<Message> implements MessageRepository {
@@ -30,5 +31,9 @@ export default class MessageRepositoryImpl extends Repository<Message> implement
         }
 
         return { data: this.values[index] }
+    }
+
+    public getAll(): Result<Message[]> {
+        return { data: this.values }
     }
 }

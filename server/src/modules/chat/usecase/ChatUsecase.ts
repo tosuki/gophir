@@ -15,8 +15,20 @@ export default class ChatUsecase {
         return this.messageRepository.save(message, userId)
     }
 
-    public connect(socketId: string): Result<User> {
-        return this.userRepository.save(socketId)
+    public connect(socketId: string): Result<{ user: User, messages: Message[] }> {
+        const user = this.userRepository.save(socketId)
+        
+        if (user.error) {
+            return { error: user.error }
+        }
+        
+        const messages = this.messageRepository.getAll()
+    
+        if (messages.error) {
+            return { error: messages.error }
+        }
+
+        return { data: { user: user.data, messages: messages.data } }
     }
 
     public disconnect(userId: number): Result<number> {

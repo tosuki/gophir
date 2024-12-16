@@ -8,16 +8,16 @@ import User from "src/modules/chat/model/User"
 
 export default class ConnectionListener extends Listener {
     public onNewConnection(socket: Socket): Result<User> {
-        const user = this.chatUsecase.connect(socket.id)
+        const connData = this.chatUsecase.connect(socket.id)
 
-        if (user.error) {
-            return user
+        if (connData.error) {
+            return { error: connData.error }
         }
 
-        socket.emit("connected", user.data)
-        logger.warn(`User ${user.data.id} connected (socketId: ${user.data.socketId})`)
+        socket.emit("connected", connData.data)
+        logger.warn(`User ${connData.data.user.id} connected (socketId: ${connData.data.user.data.socketId})`)
         
-        return user
+        return { data: connData.data.user }
     }
 
     public onDisconnect(userId: number, reason: DisconnectReason, description: string) {
