@@ -10,6 +10,7 @@ export default function MessagesComponent({ messages }: { messages: (Message & {
             { messages.map((message) => {
                 return (
                     <MessageComponent 
+                        id={ message.id }
                         authorId={ message.authorId }
                         content={ message.content }
                         createdAt={ message.createdAt }

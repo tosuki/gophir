@@ -16,14 +16,24 @@ export default function ChatComponent() {
     const [messages, setMessages] = useState<(Message & { isMine?: boolean })[]>([])
 
     useEffect(() => {
-        socket.on("connected", (data: User) => {
-            setUser(data)
-            toast.info(`Connected to the server as User ${data.id}`)
+        socket.on("connected", (data: { user: User, messages: Message[] }) => {
+            setUser(data.user)
+            setMessages(data.messages.map((message) => {
+                return {
+                    ...message,
+                    isMine: (message.authorId === user.id)
+                }
+            }))
+            toast.info(`Connected to the server as User ${data.user.id}`)
         })
 
         socket.on("message", (message: Message) => {
+            console.log("New message", message)
             setMessages((previousMessages) => {
-                return [...previousMessages, message]
+                return [...previousMessages, {
+                    ...message,
+                    isMine: (message.authorId === user.id),
+                }]
             })
         })
 
@@ -35,11 +45,7 @@ export default function ChatComponent() {
 
     return (
         <div className="chat-container">
-            <MessagesComponent messages={[
-                { authorId: 1, content: "Hello Guys!", createdAt: 0 },
-                { authorId: 2, content: "That's not how it works dumbass", createdAt: 0, isMine: true },
-                { authorId: 1, content: "Really? So you should know how to teach me, right?", createdAt: 0 }
-            ]}/>
+            <MessagesComponent messages={ messages }/>
             <InputComponent />
         </div>
     )

@@ -1,5 +1,9 @@
-export type Message = {
-    authorId: number
-    content: string
+export type MessageRaw = {
+    authorId: number,
+    content: string,
     createdAt: number
+}
+
+export type Message = MessageRaw & {
+    id: number
 }
