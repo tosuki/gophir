@@ -1,4 +1,4 @@
-import { Socket } from "socket.io"
+import { DisconnectReason, Socket } from "socket.io"
 import { logger } from "../../../logger"
 import { Result } from "../../../lib/result"
 
@@ -13,14 +13,15 @@ export default class ConnectionListener extends Listener {
         if (user.error) {
             return user
         }
-        
-        this.globalEmitter.emit("new_connection")
-        logger.debug(`User ${user.data.id} connected (socketId: ${user.data.socketId})`)
+
+        socket.emit("connected", user.data)
+        logger.warn(`User ${user.data.id} connected (socketId: ${user.data.socketId})`)
         
         return user
     }
 
-    public onDisconnect(socket: Socket) {
-        
+    public onDisconnect(userId: number, reason: DisconnectReason, description: string) {
+        logger.error(`User ${userId} disconnected due to ${reason}`)
+        this.chatUsecase.disconnect(userId)
     }
 }

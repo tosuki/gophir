@@ -3,7 +3,7 @@ import { Socket } from "socket.io"
 import Listener from "./Listener";
 
 export default class MessageListener extends Listener {
-    public handleNewMessages(message: string, userId: number, socket: Socket) {
+    public handleNewMessages(message: string, userId: number) {
         const result = this.chatUsecase.sendMessage(message, userId)
 
         if (result.error) {

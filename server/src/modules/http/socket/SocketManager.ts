@@ -1,4 +1,4 @@
-import { Server } from "socket.io"
+import { DisconnectReason, Server } from "socket.io"
 import { Server as HttpServer } from "http"
 
 import ChatUsecase from "../../chat/usecase/ChatUsecase"
@@ -37,8 +37,10 @@ export default class SocketManager extends Server {
             } 
 
             socket.on("message", (message: string) => {
-                this.messageListener.handleNewMessages(message, result.data.id, socket)
+                this.messageListener.handleNewMessages(message, result.data.id)
             })
+
+            socket.on("disconnect", this.connectionListener.onDisconnect.bind(this, result.data.id))
         })
     }
 

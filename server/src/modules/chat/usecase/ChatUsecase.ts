@@ -19,7 +19,7 @@ export default class ChatUsecase {
         return this.userRepository.save(socketId)
     }
 
-    public disconnect(socketId: number): Result<number> {
-        return { error: "to-do" }
+    public disconnect(userId: number): Result<number> {
+        return this.userRepository.deleteUser(userId)
     }
 }

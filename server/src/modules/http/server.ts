@@ -2,14 +2,17 @@ import * as express from "express"
 
 import SocketManager from "./socket/SocketManager"
 import { createServer } from "http"
+
 import UserRepositoryImpl from "../chat/repository/UserRepository"
+import MessageRepositoryImpl from "../chat/repository/MessageRepository"
 import ChatUsecase from "../chat/usecase/ChatUsecase"
 
 const app = express()
 const httpServer = createServer(app)
 
 const userRepository = new UserRepositoryImpl()
-const chatUsecase = new ChatUsecase(userRepository)
+const messageRepository = new MessageRepositoryImpl()
+const chatUsecase = new ChatUsecase(userRepository, messageRepository)
 
 const socketManager = new SocketManager(httpServer, chatUsecase)
 

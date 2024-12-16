@@ -11,7 +11,7 @@ export interface UserRepository {
 export default class UserRepositoryImpl extends Repository<User> implements UserRepository {
     public save(socketId: string): Result<User> {
         const user: User = {
-            id: this.values.length - 1,
+            id: this.values.length,
             socketId,
         }
     
@@ -28,7 +28,9 @@ export default class UserRepositoryImpl extends Repository<User> implements User
             return { error: "invalid_id" }
         }
 
-        return { error: "not_found" }
+        this.values.splice(id, 1)
+
+        return { data: id }
     }
 
     public getById(id: number): Result<User> {
