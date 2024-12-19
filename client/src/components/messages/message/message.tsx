@@ -6,8 +6,6 @@ export default function MessageComponent({ message, userId }: {
     message: Message,
     userId: number
 }) {
-    console.log(`[${message.authorId === userId}] ${message.content}`)
-
     return (
         <div className={`message-row ${message.authorId === userId ? "end" : "start"}`}>
             <div className="message-container">
