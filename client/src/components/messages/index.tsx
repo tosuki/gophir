@@ -1,20 +1,20 @@
 import { Message } from "../../api/model/Message"
+import { useSession } from "../../hooks/session"
 
 import MessageComponent from "./message/message"
 
 import "./styles.css"
 
-export default function MessagesComponent({ messages }: { messages: (Message & { isMine?: boolean })[] }) {
+export default function MessagesComponent({ messages }: { messages: Message[] }) {
+    const session = useSession()
+
     return (
         <div className="messages-container">
             { messages.map((message) => {
                 return (
                     <MessageComponent 
-                        id={ message.id }
-                        authorId={ message.authorId }
-                        content={ message.content }
-                        createdAt={ message.createdAt }
-                        isMine={ message.isMine }
+                        message={ message }
+                        userId={ session.states.id }                        
                     />
                 )
             })}

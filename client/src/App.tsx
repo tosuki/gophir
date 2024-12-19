@@ -4,11 +4,14 @@ import "./styles/global.css"
 import 'react-toastify/dist/ReactToastify.css';
 
 import ChatComponent from "./components/chat";
+import SessionProvider from "./hooks/session";
 
 function App() {
     return (
         <>
-            <ChatComponent />
+            <SessionProvider>
+                <ChatComponent />
+            </SessionProvider>
             <ToastContainer />
         </>
     )

@@ -2,11 +2,14 @@ import { Message } from "../../../api/model/Message";
 
 import "./styles.css"
 
-export default function MessageComponent(message: Message & { isMine?: boolean }) {
-    console.log(`The message is mine? ${message.isMine}`)
+export default function MessageComponent({ message, userId }: {
+    message: Message,
+    userId: number
+}) {
+    console.log(`[${message.authorId === userId}] ${message.content}`)
 
     return (
-        <div className={`message-row ${message.isMine ? "end" : "start"}`}>
+        <div className={`message-row ${message.authorId === userId ? "end" : "start"}`}>
             <div className="message-container">
                 <div className="message-header">
                     User { message.authorId }
