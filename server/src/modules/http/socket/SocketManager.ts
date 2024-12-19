@@ -1,4 +1,4 @@
-import { DisconnectReason, Server } from "socket.io"
+import { Server } from "socket.io"
 import { Server as HttpServer } from "http"
 
 import ChatUsecase from "../../chat/usecase/ChatUsecase"
