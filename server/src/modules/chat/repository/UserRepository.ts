@@ -10,8 +10,10 @@ export interface UserRepository {
 
 export default class UserRepositoryImpl extends Repository<User> implements UserRepository {
     public save(socketId: string): Result<User> {
+        const previousUser = this.getLast()
+
         const user: User = {
-            id: this.values.length,
+            id: previousUser ? previousUser.id + 1 : 0,
             socketId,
         }
     
