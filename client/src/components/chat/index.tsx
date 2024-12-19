@@ -10,30 +10,24 @@ import socket from "../../socket"
 
 import { Message } from "../../api/model/Message"
 import { User } from "../../api/model/User"
+import { useSession } from "../../hooks/session"
 
 export default function ChatComponent() {
-    const [user, setUser] = useState<User>({} as User)
+    const session = useSession()
     const [messages, setMessages] = useState<(Message & { isMine?: boolean })[]>([])
 
     useEffect(() => {
         socket.on("connected", (data: { user: User, messages: Message[] }) => {
-            setUser(data.user)
-            setMessages(data.messages.map((message) => {
-                return {
-                    ...message,
-                    isMine: (message.authorId == user.id)
-                }
-            }))
+            session.dispatchers.setUserId(data.user.id)
+            session.dispatchers.setSocketId(data.user.socketId)
+            setMessages(data.messages)
             toast.info(`Connected to the server as User ${data.user.id}`)
         })
 
         socket.on("message", (message: Message) => {
             console.log("New message", message)
             setMessages((previousMessages) => {
-                return [...previousMessages, {
-                    ...message,
-                    isMine: (message.authorId === user.id),
-                }]
+                return [...previousMessages, message]
             })
         })
 
