@@ -5,7 +5,6 @@ import ChatUsecase from "../../chat/usecase/ChatUsecase"
 import MessageListener from "./MessageListener"
 import ConnectionListener from "./ConnectionListener"
 
-import Message from "src/modules/chat/model/Message"
 
 export default class SocketManager extends Server {
     private chatUsecase: ChatUsecase
