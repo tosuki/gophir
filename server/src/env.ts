@@ -1,7 +1,10 @@
 import { z } from "zod"
 
 const envSchema = z.object({
-  NODE_ENV: z.string()
+  NODE_ENV: z.string(),
+  POSTGRES_DSN: z.string(),
+  JWT_SECRET: z.string(),
+  TOKEN_EXPIRATION: z.number().default(72)
 })
 
 const environment = envSchema.parse(process.env)
