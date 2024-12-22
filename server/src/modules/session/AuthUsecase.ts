@@ -48,4 +48,8 @@ export class AuthUsecase {
             return { error: "unhandled" }
         }
     }
+
+    public async register(username: string, password: string): Promise<Result<string>> {
+        return { error: "unhandled" }
+    }
 }
