@@ -2,7 +2,7 @@ import { z } from "zod"
 
 const envSchema = z.object({
   NODE_ENV: z.string(),
-  POSTGRES_DSN: z.string(),
+  DATABASE_URL: z.string(),
   JWT_SECRET: z.string(),
   TOKEN_EXPIRATION: z.number().default(72)
 })
