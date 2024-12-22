@@ -7,3 +7,4 @@ junit.xml
 yarn-error.log
 tsconfig.tsbuildinfo
 package-lock.json
+prisma/migrations
