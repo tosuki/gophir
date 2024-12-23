@@ -11,16 +11,17 @@ import UserRepositoryImpl from "../chat/repository/UserRepository"
 import MessageRepositoryImpl from "../chat/repository/MessageRepository"
 import ChatUsecase from "../chat/usecase/ChatUsecase"
 
-import { PrismaClient } from "@prisma/client"
+import { createPrismaClient } from "./prisma"
 
 const app = express()
 const httpServer = createServer(app)
 
-const prismaClient = new PrismaClient()
+const prismaClient = createPrismaClient()
 
 const authUsecase = new AuthUsecase(prismaClient)
 const sessionRouter = registerRoutes(authUsecase)
 
+app.use(express.json())
 app.use("/api/session", sessionRouter)
 
 const userRepository = new UserRepositoryImpl()
