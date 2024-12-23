@@ -12,7 +12,7 @@ export class AuthUsecase {
         private prismaClient: PrismaClient
     ) {}
 
-    public async authenticate(username: string, password: string): Promise<Result<string>> {
+    public async register(username: string, password: string): Promise<Result<string>> {
         try {
             const isUsernameTaken = await this.prismaClient.user.findUnique({
                 where: { username },
@@ -49,7 +49,7 @@ export class AuthUsecase {
         }
     }
 
-    public async register(username: string, password: string): Promise<Result<string>> {
+    public async authenticate(username: string, password: string): Promise<Result<string>> {
         return { error: "unhandled" }
     }
 }

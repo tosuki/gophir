@@ -32,11 +32,11 @@ export class AuthHttpController {
         next()
     }
 
-    public async authenticate(request: Request, response: Response) {
+    public async register(request: Request, response: Response) {
         try {
             const data = AuthenticateSchema.parse(request.body)
 
-            const token = await this.authUsecase.authenticate(data.username, data.password)
+            const token = await this.authUsecase.register(data.username, data.password)
 
             if (!token.error) {
                 response.status(ACCEPTED).json({
