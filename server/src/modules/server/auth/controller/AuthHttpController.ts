@@ -73,6 +73,12 @@ export class AuthHttpController {
                 })
                 return
             }
+
+            logger.error(`Unhandled error: ${err}`)
+            response.status(INTERNAL_SERVER_ERROR).json({
+                ok: false,
+                error: "internal_server_error"
+            })
         }
     }
 }
