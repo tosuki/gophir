@@ -6,6 +6,7 @@ import MessageListener from "./MessageListener"
 import ConnectionListener from "./ConnectionListener"
 
 import { authMiddlware } from "./middlware"
+import { logger } from "../../../logger"
 
 export default class SocketManager extends Server {
     private chatUsecase: ChatUsecase
@@ -34,7 +35,8 @@ export default class SocketManager extends Server {
             const result = this.connectionListener.onNewConnection(socket)
     
             if (result.error) {
-                return
+                socket.disconnect(true)
+                return logger.error(`Disconnected ${socket.id} due to ${result.error}`)
             } 
 
             socket.on("message", (message: string) => {
