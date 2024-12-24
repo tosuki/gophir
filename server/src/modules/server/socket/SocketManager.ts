@@ -5,7 +5,7 @@ import ChatUsecase from "../../chat/usecase/ChatUsecase"
 import MessageListener from "./MessageListener"
 import ConnectionListener from "./ConnectionListener"
 
-import { authMiddlware } from "./middlware"
+import { authMiddlware } from "./authMiddlware"
 import { logger } from "../../../logger"
 
 export default class SocketManager extends Server {
