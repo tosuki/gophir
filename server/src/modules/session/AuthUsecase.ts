@@ -1,16 +1,27 @@
 import { PrismaClient } from "@prisma/client"
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library"
+import { isPrismaError } from "../prisma"
 
-import { hash } from "bcrypt"
+import { hash, compare } from "bcrypt"
 import { encodeSession } from "./token"
 
 import { Result } from "../../lib/result"
-import { logger } from "../../logger"
+import { User } from "./User"
 
 export class AuthUsecase {
     constructor(
         private prismaClient: PrismaClient
     ) {}
+
+    private createSession({ id, username, createdAt, updatedAt }: Omit<User, "updatedAt" | "createdAt"> & {
+        createdAt: Date,
+        updatedAt: Date
+    }): Result<string> {
+        return encodeSession({
+            createdAt: createdAt.getTime(),
+            updatedAt: updatedAt.getTime(),
+            id, username,
+        })
+    }
 
     public async register(username: string, password: string): Promise<Result<string>> {
         try {
@@ -31,17 +42,9 @@ export class AuthUsecase {
                 }
             })
 
-            const token = encodeSession({
-                id: user.id,
-                username: user.username,
-                createdAt: user.createdAt.getTime(),
-                updatedAt: user.updatedAt.getTime(),
-            })
-
-            return token
+            return this.createSession(user)
         } catch (err) {
-            if (err instanceof PrismaClientKnownRequestError) {
-                logger.error(`Failed to create the user due to ${err.code} - ${err.message}`)
+            if (isPrismaError(err)) {
                 return { error: "database_error" }
             }
         
@@ -50,6 +53,27 @@ export class AuthUsecase {
     }
 
     public async authenticate(username: string, password: string): Promise<Result<string>> {
-        return { error: "unhandled" }
+        try {
+            const user = await this.prismaClient.user.findUnique({
+                where: { username }
+            })
+
+            if (!user) {
+                return { error: "invalid_username" }
+            }
+
+            if (!(await compare(password, user.password))) {
+                return { error: "invalid_password" }
+            }
+
+            return this.createSession(user)
+        } catch (err) {
+            if (isPrismaError(err)) {
+                return { error: "database_error" }
+            }
+
+            return { error: "unhandled" }
+        }
+
     }
 }

@@ -11,7 +11,7 @@ import UserRepositoryImpl from "../chat/repository/UserRepository"
 import MessageRepositoryImpl from "../chat/repository/MessageRepository"
 import ChatUsecase from "../chat/usecase/ChatUsecase"
 
-import { createPrismaClient } from "./prisma"
+import { createPrismaClient } from "../prisma"
 
 const app = express()
 const httpServer = createServer(app)

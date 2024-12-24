@@ -1,5 +1,12 @@
 import { PrismaClient } from "@prisma/client"
-import { logger } from "../../logger"
+import { logger } from "../logger"
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library"
+
+export const UNIQUE_CONSTRAINT_VIOLATION = "P2002"
+
+export function isPrismaError(err: any): err is PrismaClientKnownRequestError {
+    return err instanceof PrismaClientKnownRequestError
+}
 
 export function createPrismaClient(): PrismaClient {
     const prisma = new PrismaClient({

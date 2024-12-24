@@ -17,6 +17,14 @@ export class AuthHttpController {
         private authUsecase: AuthUsecase
     ) {}
 
+    private handleUnhandledError(error: any, response: Response) {
+        logger.error(`Unhandled error ${error}`)
+        response.status(INTERNAL_SERVER_ERROR).json({
+            ok: false,
+            error: "internal_server_error"
+        })
+    }
+
     public middlware(request: Request, response: Response, next: NextFunction) {
         const passport = request.headers.authorization
 
@@ -30,6 +38,42 @@ export class AuthHttpController {
         }
 
         next()
+    }
+
+    public async authenticate(request: Request, response: Response) {
+        try {
+            const data = AuthenticateSchema.parse(request.body)
+
+            const token = await this.authUsecase.authenticate(data.username, data.password)
+
+            if (!token.error) {
+                response.status(ACCEPTED).json({
+                    ok: true,
+                    data: token.data,
+                })
+                return
+            }
+
+            if (token.error === "invalid_password" || token.error === "invalid_username") {
+                response.status(UNAUTHORIZED).json({
+                    ok: false,
+                    error: token.error,
+                })
+            } else {
+                logger.error(`Unhandled error ${token.error}`)
+                response.status(INTERNAL_SERVER_ERROR).json({
+                    ok: false,
+                    error: "unhandled"
+                })
+            }
+        } catch (err) {
+            if (isZodError(err)) {
+                return response.status(BAD_REQUEST).json({
+                    ok: false,
+                    data: "bad_request"
+                })
+            }
+        }
     }
 
     public async register(request: Request, response: Response) {
@@ -59,11 +103,7 @@ export class AuthHttpController {
                         error: "internal_server_error"
                     })
                 default:
-                    logger.error(`Unhandled error ${token.error}`)
-                    response.status(INTERNAL_SERVER_ERROR).json({
-                        ok: false,
-                        error: "unhandled"
-                    })
+                    this.handleUnhandledError(token.error, response)
             }
         } catch (err) {
             if (isZodError(err)) {
@@ -74,11 +114,7 @@ export class AuthHttpController {
                 return
             }
 
-            logger.error(`Unhandled error: ${err}`)
-            response.status(INTERNAL_SERVER_ERROR).json({
-                ok: false,
-                error: "internal_server_error"
-            })
+            this.handleUnhandledError(err, response)
         }
     }
 }

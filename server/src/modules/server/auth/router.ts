@@ -9,8 +9,8 @@ export function registerRoutes(authUsecase: AuthUsecase): Router {
     const router = Router()
     const controller = new AuthHttpController(authUsecase)
 
-
     router.post("/register", controller.register.bind(controller))
+    router.post("/authenticate", controller.authenticate.bind(controller))
     router.get("/rewoke", controller.middlware.bind(controller), (_, res) => {
         res.status(OK).json({
             ok: true,
