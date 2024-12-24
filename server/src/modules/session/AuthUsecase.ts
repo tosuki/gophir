@@ -7,6 +7,8 @@ import { encodeSession } from "./token"
 import { Result } from "../../lib/result"
 import { User } from "./User"
 
+import environment from "../../env"
+
 export class AuthUsecase {
     constructor(
         private prismaClient: PrismaClient
@@ -34,7 +36,7 @@ export class AuthUsecase {
                 return { error: "occupied" }
             }
 
-            const hashedPassword = await hash(password, 10)
+            const hashedPassword = await hash(password, environment.BCRYPT_SALT_ROUNDS)
             const user = await this.prismaClient.user.create({
                 data: {
                     username,
@@ -74,6 +76,5 @@ export class AuthUsecase {
 
             return { error: "unhandled" }
         }
-
     }
 }

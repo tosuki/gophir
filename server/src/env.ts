@@ -4,6 +4,7 @@ const envSchema = z.object({
   NODE_ENV: z.string(),
   DATABASE_URL: z.string(),
   JWT_SECRET: z.string(),
+  BCRYPT_SALT_ROUNDS: z.string(),
   TOKEN_EXPIRATION: z.number().default(72)
 })
 
