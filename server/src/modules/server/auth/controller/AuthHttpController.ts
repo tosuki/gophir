@@ -60,11 +60,7 @@ export class AuthHttpController {
                     error: token.error,
                 })
             } else {
-                logger.error(`Unhandled error ${token.error}`)
-                response.status(INTERNAL_SERVER_ERROR).json({
-                    ok: false,
-                    error: "unhandled"
-                })
+                this.handleUnhandledError(token.error, response)
             }
         } catch (err) {
             if (isZodError(err)) {
@@ -73,6 +69,8 @@ export class AuthHttpController {
                     data: "bad_request"
                 })
             }
+
+            this.handleUnhandledError(err, response)
         }
     }
 
