@@ -6,6 +6,7 @@ import { Session } from "./Session"
 import { Result } from "../../lib/result"
 
 import environment from "../../env"
+import e from "express"
 
 export function encodeSession(partialSession: PartialSession): Result<string> {
     const issuedAt = Date.now()
@@ -24,15 +25,20 @@ export function decodeSession(token: string): Result<Session> {
     try {
         return { data: decode(token, environment.JWT_SECRET, false, "HS256")}
     } catch (err: any) {
-        switch (err.code) {
+        switch (err.message) {
             case "Not enough or too many segments":
             case "Algorithm not supported":
+            case "No token supplied":
             case "Signature verification failed":
                 logger.error(`Failed to decode the token due to ${err.code}`)
                 return { error: "invalid_token" }
             case "Token expired":
                 return { error: "expired_token" }
             default:
+                if (err.message.indexOf("Unexpected token") === 0) {
+                    return { error: "invalid_token" }
+                }
+
                 return { error: "unhandled" }
         }
     }
