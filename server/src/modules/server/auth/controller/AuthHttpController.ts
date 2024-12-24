@@ -1,7 +1,10 @@
 import { Request, Response, NextFunction } from "express"
 
 import { AuthUsecase } from "../../../session/AuthUsecase"
+import { decodeSession } from "../../../session/token"
+
 import { isZodError, AuthenticateSchema } from "./Schemas"
+
 import { logger } from "../../../../logger"
 
 import {
@@ -35,6 +38,12 @@ export class AuthHttpController {
             })
 
             return
+        }
+
+        const decodedSession = decodeSession(passport)
+
+        if (decodedSession.error) {
+            
         }
 
         next()
