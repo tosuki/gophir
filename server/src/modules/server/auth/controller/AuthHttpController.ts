@@ -1,11 +1,11 @@
-import { Request, Response, NextFunction } from "express"
+import { Request, Response } from "express"
 
 import { AuthUsecase } from "../../../session/AuthUsecase"
-import { decodeSession } from "../../../session/token"
 
 import { isZodError, AuthenticateSchema } from "./Schemas"
-
 import { logger } from "../../../../logger"
+
+import environment from "../../../../env"
 
 import {
     UNAUTHORIZED,
@@ -14,6 +14,7 @@ import {
     CONFLICT,
     INTERNAL_SERVER_ERROR
 } from "../../util/codes"
+import { renewSession } from "src/modules/session/token"
 
 export class AuthHttpController {
     constructor(
@@ -25,6 +26,35 @@ export class AuthHttpController {
         response.status(INTERNAL_SERVER_ERROR).json({
             ok: false,
             error: "internal_server_error"
+        })
+    }
+
+    public rewoke(request: Request, response: Response): any {
+        const renewedPassport = response.getHeader(environment.RENEW_AUTHORIZATION_HEADER)
+
+        if (renewedPassport) {
+            return response.status(ACCEPTED).json({
+                ok: true,
+                data: {
+                    session: response.locals.session,
+                    token: renewedPassport,
+                }
+            })
+        }
+
+        const renewed = renewSession(response.locals.session)
+
+        if (renewed.error) {
+            logger.error(`Failed to rewoke the session due to ${renewed.error}`)
+            return response.status(INTERNAL_SERVER_ERROR).json({
+                ok: false,
+                error: "internal_server_error"
+            })
+        }
+
+        response.status(ACCEPTED).json({
+            ok: true,
+            data: renewed.data
         })
     }
 
