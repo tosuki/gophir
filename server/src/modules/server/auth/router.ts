@@ -3,6 +3,8 @@ import { Router } from "express"
 import { AuthUsecase } from "../../session/AuthUsecase"
 import { AuthHttpController } from "./controller/AuthHttpController"
 
+import { httpAuthMiddlware } from "../auth/middlware"
+
 import { OK } from "../util/codes"
 
 export function registerRoutes(authUsecase: AuthUsecase): Router {
@@ -11,7 +13,7 @@ export function registerRoutes(authUsecase: AuthUsecase): Router {
 
     router.post("/register", controller.register.bind(controller))
     router.post("/authenticate", controller.authenticate.bind(controller))
-    router.get("/rewoke", controller.middlware.bind(controller), (_, res) => {
+    router.get("/rewoke", httpAuthMiddlware, (_, res) => {
         res.status(OK).json({
             ok: true,
             data: "hello-world"

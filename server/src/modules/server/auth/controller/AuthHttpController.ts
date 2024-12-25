@@ -28,27 +28,6 @@ export class AuthHttpController {
         })
     }
 
-    public middlware(request: Request, response: Response, next: NextFunction) {
-        const passport = request.headers.authorization
-
-        if (!passport) {
-            response.status(UNAUTHORIZED).json({
-                ok: false,
-                error: "bad_request"
-            })
-
-            return
-        }
-
-        const decodedSession = decodeSession(passport)
-
-        if (decodedSession.error) {
-            
-        }
-
-        next()
-    }
-
     public async authenticate(request: Request, response: Response) {
         try {
             const data = AuthenticateSchema.parse(request.body)

@@ -6,11 +6,43 @@ import { Session } from "./Session"
 import { Result } from "../../lib/result"
 
 import environment from "../../env"
-import e from "express"
 
-export function encodeSession(partialSession: PartialSession): Result<string> {
+export type EncodedSession = {
+    token: string
+    issuedAt: number
+    expiresAt: number
+}
+
+export function renewSession(session: Session): Result<{ session: Session, token: string }> {
+    const encoded = encodeSession({
+        id: session.id,
+        username: session.username,
+        createdAt: session.createdAt,
+        updatedAt: session.updatedAt,
+    })
+
+    if (encoded.error) {
+        return { error: encoded.error }
+    }
+
+    return {
+        data: {
+            session: {
+                id: session.id,
+                username: session.username,
+                createdAt: session.createdAt,
+                updatedAt: session.updatedAt,
+                expiresAt: encoded.data.expiresAt,
+                issuedAt: encoded.data.issuedAt,
+            },
+            token: encoded.data.token
+        }
+    }
+}
+
+export function encodeSession(partialSession: PartialSession): Result<{ token: string, issuedAt: number, expiresAt: number }> {
     const issuedAt = Date.now()
-    const expiresAt = issuedAt + (60*60 * environment.TOKEN_EXPIRATION)
+    const expiresAt = issuedAt + (60*60*1000 * environment.TOKEN_EXPIRATION)
 
     const token = encode({
         expiresAt,
@@ -18,7 +50,7 @@ export function encodeSession(partialSession: PartialSession): Result<string> {
         ...partialSession
     }, environment.JWT_SECRET, "HS256")
 
-    return { data: token }
+    return { data: { token, issuedAt, expiresAt } }
 }
 
 export function decodeSession(token: string): Result<Session> {
@@ -42,4 +74,23 @@ export function decodeSession(token: string): Result<Session> {
                 return { error: "unhandled" }
         }
     }
+}
+
+export type ExpirationStatus =
+    | "active"
+    | "expired"
+    | "renew"
+
+export function checkSessionExpiration(session: Session): ExpirationStatus {
+    const now = Date.now()
+
+    if (session.expiresAt > now) {
+        return "active"
+    }
+
+    if (session.expiresAt + (60*60*1000 * environment.TOKEN_GRACE_PERIOD) > now) {
+        return "renew"
+    }
+    
+    return "expired"
 }

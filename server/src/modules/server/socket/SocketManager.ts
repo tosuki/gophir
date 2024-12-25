@@ -5,7 +5,7 @@ import ChatUsecase from "../../chat/usecase/ChatUsecase"
 import MessageListener from "./MessageListener"
 import ConnectionListener from "./ConnectionListener"
 
-import { authMiddlware } from "./authMiddlware"
+import { socketAuthMiddlware } from "../auth/middlware"
 import { logger } from "../../../logger"
 
 export default class SocketManager extends Server {
@@ -29,7 +29,7 @@ export default class SocketManager extends Server {
     }
 
     public connect() {
-        this.use(authMiddlware)
+        this.use(socketAuthMiddlware)
 
         this.on("connection", (socket) => {
             const result = this.connectionListener.onNewConnection(socket)

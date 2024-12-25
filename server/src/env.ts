@@ -5,7 +5,8 @@ const envSchema = z.object({
   DATABASE_URL: z.string(),
   JWT_SECRET: z.string(),
   BCRYPT_SALT_ROUNDS: z.string(),
-  TOKEN_EXPIRATION: z.number().default(72)
+  TOKEN_EXPIRATION: z.number().default(72),
+  TOKEN_GRACE_PERIOD: z.number().default(3)
 })
 
 const environment = envSchema.parse(process.env)
