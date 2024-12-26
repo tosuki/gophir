@@ -14,7 +14,7 @@ export const SessionContext = createContext<SessionContextType>({} as SessionCon
 export function SessionProvider(properties: {
     children: ReactNode
 }) {
-    const [passport, setPassport] = usePersistentState<string>("")
+    const [passport, setPassport] = usePersistentState<string>("AUTH_PASSPORT", "")
 
     return (
         <SessionContext.Provider value={{
