@@ -7,7 +7,7 @@ import { PasswordInput } from "../../components/inputs/password"
 import "./styles.css"
 
 export function AuthenticatePage() {
-    const [email, setEmail] = useState<string>("")
+    const [username, setUsername] = useState<string>("")
     const [password, setPassword] = useState<string>("")
 
     return (
@@ -19,8 +19,8 @@ export function AuthenticatePage() {
                 <div className="form-body">
                     <div className="form-inputs">
                         <CommonInput 
-                            placeholder="Email"
-                            setValue={ setEmail }
+                            placeholder="Username"
+                            setValue={ setUsername }
                         />
                         <PasswordInput 
                             setValue={ setPassword }
