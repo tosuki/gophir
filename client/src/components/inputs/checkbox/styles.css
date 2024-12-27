@@ -1,0 +1,16 @@
+.checkbox-container {
+    width: 15%;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+
+    transition: opacity .5s;
+}
+
+.checkbox-container:hover {
+    opacity: .8;
+}

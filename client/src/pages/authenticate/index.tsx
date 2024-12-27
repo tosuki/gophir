@@ -1,5 +1,9 @@
 import { useState } from "react"
 
+import { SubmitButton } from "../../components/buttons/submit"
+import { CommonInput } from "../../components/inputs/common"
+import { PasswordInput } from "../../components/inputs/password"
+
 import "./styles.css"
 
 export function AuthenticatePage() {
@@ -14,21 +18,19 @@ export function AuthenticatePage() {
                 </div>
                 <div className="form-body">
                     <div className="form-inputs">
-                        <input
-                            type="text"
-                            placeholder="Email adress"
-                            className="form-input"
-                            onChange={(e) => setEmail(e.target.value)}
+                        <CommonInput 
+                            placeholder="Email"
+                            setValue={ setEmail }
                         />
-                        <input
-                            type="text"
-                            placeholder="Password"
-                            className="form-input"
-                            onChange={(e) => setPassword(e.target.value)}
+                        <PasswordInput 
+                            setValue={ setPassword }
                         />
                     </div>
-                    <button className="continue-button">Continue</button>
-                    <p>Don't have an account? <a href="/signup">Sign Up</a></p>
+                    <SubmitButton 
+                        placeholder="Continue"
+                        onClick={() => window.alert("hello world")}
+                    />
+                    <p className="problem-message">Don't have an account? <a href="/signup">Sign Up</a></p>
                 </div>
             </div>
         </div>
