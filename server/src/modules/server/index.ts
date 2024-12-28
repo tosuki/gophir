@@ -1,4 +1,5 @@
 import * as express from "express"
+import * as cors from "cors"
 
 import SocketManager from "./socket/SocketManager"
 
@@ -22,6 +23,7 @@ const authUsecase = new AuthUsecase(prismaClient)
 const sessionRouter = registerRoutes(authUsecase)
 
 app.use(express.json())
+app.use(cors())
 app.use("/api/session", sessionRouter)
 
 const userRepository = new UserRepositoryImpl()
