@@ -14,7 +14,8 @@ import {
     CONFLICT,
     INTERNAL_SERVER_ERROR
 } from "../../util/codes"
-import { renewSession } from "src/modules/session/token"
+
+import { renewSession } from "../../../session/token"
 
 export class AuthHttpController {
     constructor(
