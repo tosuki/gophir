@@ -27,7 +27,7 @@ export default class SocketManager extends Server {
                 const result = this.chatUsecase.sendMessage(socket.session, message)
 
                 if (result.error) {
-                    logger.error(`Failed to process the message sent by ${socket.session.username} due to ${result.error}`)
+                    return logger.error(`Failed to process the message sent by ${socket.session.username} due to ${result.error}`)
                 }
 
                 socket.emit("message", result.data)
