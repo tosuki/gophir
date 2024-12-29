@@ -1,8 +1,7 @@
-type Message = {
-    id: number
-    authorId: number
-    content: string
-    createdAt: number
-}
+import { PartialMessage } from "./PartialMessage"
 
-export default Message
+export type Message = PartialMessage & {
+    id: number
+    createdAt: number
+    updatedAt: number;
+}

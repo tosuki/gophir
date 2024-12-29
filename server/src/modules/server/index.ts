@@ -1,7 +1,7 @@
 import * as express from "express"
 import * as cors from "cors"
 
-import SocketManager from "./socket/SocketManager"
+import SocketManager from "./SocketManager"
 
 import { createServer } from "http"
 import { registerRoutes } from "./auth/router"
