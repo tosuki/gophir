@@ -67,7 +67,7 @@ export class AuthHttpController {
             const token = await this.authUsecase.authenticate(data.username, data.password)
 
             if (!token.error) {
-                response.status(CREATED).json({
+                response.status(ACCEPTED).json({
                     ok: true,
                     data: token.data,
                 })
@@ -101,7 +101,7 @@ export class AuthHttpController {
             const token = await this.authUsecase.register(data.username, data.password)
 
             if (!token.error) {
-                response.status(ACCEPTED).json({
+                response.status(CREATED).json({
                     ok: true,
                     data: token.data,
                 })
