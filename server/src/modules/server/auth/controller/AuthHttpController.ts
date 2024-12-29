@@ -12,7 +12,8 @@ import {
     ACCEPTED,
     BAD_REQUEST,
     CONFLICT,
-    INTERNAL_SERVER_ERROR
+    INTERNAL_SERVER_ERROR,
+    CREATED
 } from "../../util/codes"
 
 import { renewSession } from "../../../session/token"
@@ -66,7 +67,7 @@ export class AuthHttpController {
             const token = await this.authUsecase.authenticate(data.username, data.password)
 
             if (!token.error) {
-                response.status(ACCEPTED).json({
+                response.status(CREATED).json({
                     ok: true,
                     data: token.data,
                 })
