@@ -1,4 +1,5 @@
 import { HttpStatusCode, isAxiosError } from "axios";
+import { isNetworkError, parseResponseStatusError } from "../../lib/axios"
 import { Result } from "../../lib/result";
 
 import fetcher from "./instance";
@@ -13,12 +14,13 @@ export async function authenticate(username: string, password: string): Promise<
             throw new Error(`Received ${status} as status code but the client doesn't know how to handle it!`)
         }
 
-        return { data: data.token }
+        return { data: data.data.token }
     } catch (err) {
-        if (isAxiosError(err)) {
-
+        if (isAxiosError(err) && !isNetworkError(err)) {
+            throw parseResponseStatusError(err.response?.status)
         }
 
+        console.log(err)
         return { error: "unhandled" }
     }
 }

@@ -1,5 +1,6 @@
-import { ReactNode, createContext, useContext } from "react"
-import { usePersistentState } from "../util/persistentState"
+import { ReactNode, createContext, useContext, useEffect } from "react"
+import { usePersistentState } from "../lib/persistentState"
+import { useNavigate } from "react-router"
 
 export type SessionContextType = {
     states: {
@@ -26,14 +27,23 @@ export function SessionProvider(properties: {
     )
 }
 
-export function checkPassport(Element: (properties?: any) => ReactNode, ...properties: any[]): ReactNode {
+export type RouteProperties = {
+    children: ReactNode
+    isPrivate?: boolean
+}
+
+export function Route({ children, isPrivate }: RouteProperties) {
     const session = useSession()
+    const navigate = useNavigate()
 
-    if (!session.states.passport) {
-        return <h1>Unauthorized</h1>
-    }
+    useEffect(() => {
+        if (isPrivate && session.states.passport.length <= 0) {
+            navigate("/")
+        }
+    }, [session.states.passport])
 
-    return <Element { ...properties }/>
+
+    return children
 }
 
 export function useSession() {
