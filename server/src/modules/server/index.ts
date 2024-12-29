@@ -2,17 +2,15 @@ import * as express from "express"
 import * as cors from "cors"
 
 import SocketManager from "./SocketManager"
+import ChatUsecase from "../chat/ChatUsecase"
 
 import { createServer } from "http"
 import { registerRoutes } from "./auth/router"
 
 import { AuthUsecase } from "../session/AuthUsecase"
 
-import UserRepositoryImpl from "../chat/repository/UserRepository"
-import MessageRepositoryImpl from "../chat/repository/MessageRepository"
-import ChatUsecase from "../chat/usecase/ChatUsecase"
-
 import { createPrismaClient } from "../prisma"
+import { InMemoryMessageRepositoryImpl } from "../chat/MessageRepository"
 
 const app = express()
 const httpServer = createServer(app)
@@ -26,10 +24,8 @@ app.use(express.json())
 app.use(cors())
 app.use("/api/session", sessionRouter)
 
-const userRepository = new UserRepositoryImpl()
-const messageRepository = new MessageRepositoryImpl()
-const chatUsecase = new ChatUsecase(userRepository, messageRepository)
-
+const messageRepository = new InMemoryMessageRepositoryImpl()
+const chatUsecase = new ChatUsecase(messageRepository)
 const socketManager = new SocketManager(httpServer, chatUsecase)
 
 app.get("/ok", (_, response) => {
