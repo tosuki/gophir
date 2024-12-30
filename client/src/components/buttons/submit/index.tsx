@@ -3,7 +3,7 @@ import "./styles.css"
 export type SubmitButtonProperties = {
     placeholder: string
     className?: string
-    onClick?: () => any
+    onClick?: (e: any) => any
 }
 
 export function SubmitButton(properties: SubmitButtonProperties) {

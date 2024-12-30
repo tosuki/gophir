@@ -9,6 +9,7 @@
 
 
     transition: opacity .5s;
+    border: none;
 }
 
 .button:hover {

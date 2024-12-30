@@ -6,6 +6,12 @@
     --text-color: #2d333a;
     --border-color: #c2c8d0;
     --authenticate-form-background: #ffffff;
+
+    --sidebar-bg: #171717;
+    --sidebar-fg: var(--background-color);
+
+    --chat-bg: #212121;
+    --chat-fg: var(--background-color);
 }
 
 * {
