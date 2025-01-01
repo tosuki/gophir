@@ -1,16 +1,11 @@
 import { toast } from "react-hot-toast"
 import { register } from "../../services/session"
 
-import { useSession } from "../../hooks/session";
-import { useNavigate } from "react-router";
-
 import { SessionPagePrototype } from "./prototype";
+import { SessionContextType } from "../../hooks/session";
 
 export function RegisterPage() {
-    const session = useSession()
-    const navigate = useNavigate()
-
-    const onSubmit = (username: string, password: string) => {
+    const onSubmit = (username: string, password: string, session: SessionContextType) => {
         if (!username || !password) {
             return toast.error("Please fill all the inputs first")
         }
@@ -23,7 +18,6 @@ export function RegisterPage() {
                 }
 
                 session.dispatchers.setPassport(result.data)
-                navigate("/chat")
             })
             .catch((registrationError) => {
                 switch (registrationError.error) {

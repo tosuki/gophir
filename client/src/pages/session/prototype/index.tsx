@@ -1,4 +1,14 @@
-import { useState, useCallback, ReactNode } from "react"
+import {
+    useState,
+    useCallback,
+    useEffect,
+    ReactNode
+} from "react"
+import {
+    SessionContextType,
+    useSession
+} from "../../../hooks/session"
+import { useNavigate } from "react-router"
 
 import { CommonInput } from "../../../components/inputs/common"
 import { SubmitButton } from "../../../components/buttons/submit"
@@ -12,17 +22,27 @@ export type SessionPrototypeProperties = {
     onSubmit: (
         username: string,
         password: string,
+        session: SessionContextType
     ) => any,
     footerMessage?: ReactNode
     formTitle?: string
 }
 
 export function SessionPagePrototype(properties: SessionPrototypeProperties) {
+    const session = useSession()
+    const navigate = useNavigate()
+
     const [username, setUsername] = useState<string>("")
     const [password, setPassword] = useState<string>("")
     
+    useEffect(() => {
+        if (session.states.passport) {
+            navigate("/chat")
+        }
+    }, [session.states.passport])
+
     const onSubmit = useCallback(() => {
-        properties.onSubmit(username, password)
+        properties.onSubmit(username, password, session)
     }, [username, password])
 
     return (

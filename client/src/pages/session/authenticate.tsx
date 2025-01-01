@@ -1,5 +1,4 @@
-import { useSession } from "../../hooks/session"
-import { useNavigate } from "react-router"
+import { SessionContextType } from "../../hooks/session"
 
 import { toast } from "react-hot-toast"
 import { authenticate } from "../../services/session"
@@ -7,10 +6,7 @@ import { authenticate } from "../../services/session"
 import { SessionPagePrototype } from "./prototype"
 
 export function AuthenticatePage() {
-    const session = useSession()
-    const navigate = useNavigate()
-
-    const onSubmit = (username: string, password: string) => {
+    const onSubmit = (username: string, password: string, session: SessionContextType) => {
         if (!username || !password) {
             return toast.error("Please fill all the empty fields first")
         }
@@ -22,7 +18,6 @@ export function AuthenticatePage() {
                 }
 
                 session.dispatchers.setPassport(result.data)
-                navigate("/chat")
             })
             .catch((authenticationError) => {
                 switch (authenticationError.error) {
