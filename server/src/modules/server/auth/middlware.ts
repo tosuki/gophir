@@ -57,6 +57,8 @@ export function httpAuthMiddlware(request: Request, response: Response, next: Ne
 export function socketAuthMiddlware(socket: Socket, next: (error?: ExtendedError) => void) {
     const passport = socket.handshake.auth.passport
 
+    logger.debug(`Received connection of ${socket.id}`)
+
     if (!passport) {
         logger.error(`Refused connection from ${socket.id} due to lack of passport`)
         return next(new Error("bad_request"))

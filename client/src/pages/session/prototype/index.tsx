@@ -16,8 +16,6 @@ import { PasswordInput } from "../../../components/inputs/password"
 
 import "./styles.css"
 
-// export type RedirectFunction = (to: string) => unknown
-
 export type SessionPrototypeProperties = {
     onSubmit: (
         username: string,

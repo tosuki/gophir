@@ -12,7 +12,7 @@ export default class SocketManager extends Server {
     constructor(httpServer: HttpServer, chatUsecase: ChatUsecase) {
         super(httpServer, {
             cors: {
-                origin: "http://localhost:5173"
+                origin: "*"
             }
         })
     }
@@ -21,17 +21,7 @@ export default class SocketManager extends Server {
         this.use(socketAuthMiddlware)//only authenticated user can connect
 
         this.on("connection", (socket) => {
-            logger.debug(`[${socket.session.username} | ${socket.id}] connected`)
-
-            socket.on("message", (message: string) => {
-                const result = this.chatUsecase.sendMessage(socket.session, message)
-
-                if (result.error) {
-                    return logger.error(`Failed to process the message sent by ${socket.session.username} due to ${result.error}`)
-                }
-
-                socket.emit("message", result.data)
-            })
+            console.log(`${socket.id} connected`)
 
             socket.on("disconnect", (reason) => {
                 logger.debug(`${socket.id} disconnect due to ${reason}`)
