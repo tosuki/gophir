@@ -1,0 +1,23 @@
+.dropdown-menu-container {
+    position: absolute;
+    top: 100px;
+    right: 40px;
+}
+
+.dropdown-menu-container ul {
+    list-style: none;
+    border-radius: 8px;
+}
+
+.dropdown-menu-container ul li {
+    background-color: #ffffff;
+    color: black;
+    padding: 20px;
+    cursor: pointer;
+
+    transition: opacity .5s;
+}
+
+.dropdown-menu-container ul li:hover {
+    opacity: .8;
+}

@@ -4,6 +4,7 @@ import "./styles.css"
 
 import { CommonInput } from "../inputs/common"
 import { SubmitButton } from "../buttons/submit"
+
 import toast from "react-hot-toast"
 
 export function ChatComponent() {

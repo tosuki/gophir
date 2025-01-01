@@ -1,0 +1,26 @@
+.headerbar-container {
+    width: 100%;
+
+    display: flex;
+    justify-content: end;
+    align-items: center;
+
+    padding-top: 30px;
+    padding-right: 40px;
+}
+
+.headerbar-container .right .profile-button {
+    height: 50px;
+    width: 50px;
+
+    background-color: white;
+    cursor: pointer;
+
+    border-radius: 100%;
+}
+
+.headerbar-container .right {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}

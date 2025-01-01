@@ -1,14 +1,11 @@
 .chat-container {
-  width: 100%;
+  width: 50%;
   height: 100%;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-direction: column;
-
-  background-color: var(--chat-bg);
-  color: var(--chat-fg);
 }
 
 .inputs-container {
@@ -17,6 +14,7 @@
   padding-right: 20px;
   display: flex;
   align-items: center;
+  margin-bottom: 20px;
 }
 
 .button-container {
