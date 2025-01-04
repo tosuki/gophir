@@ -7,7 +7,8 @@
     --border-color: #c2c8d0;
     --authenticate-form-background: #ffffff;
 
-    
+    --message-bg: var(--background-color);
+    --message-fg: var(--text-color); 
 
     --chat-bg: #212121;
     --chat-fg: var(--background-color);

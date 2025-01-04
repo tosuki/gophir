@@ -1,5 +1,9 @@
+import { useSession } from "../../hooks/session"
+
 export function ProfilePage() {
+    const session = useSession()
+
     return (
-        <h1>Profile page</h1>
+        <h1>{ session.states.passport }</h1>
     )
 }
