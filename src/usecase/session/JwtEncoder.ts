@@ -21,7 +21,7 @@ export class JWTEncoder implements PassportEncoder {
         this.expirationTime = expirationTime
     }
 
-    public encodeSession(partialSession: PartialSession, expirationTime?: number): string {
+    encodeSession(partialSession: PartialSession, expirationTime?: number): string {
         const issuedAt = Date.now()
         const expiresAt = issuedAt + (expirationTime || this.expirationTime)
 
@@ -33,7 +33,7 @@ export class JWTEncoder implements PassportEncoder {
         return token
     }
 
-    public decodeSession(passport: string): Session {
+    decodeSession(passport: string): Session {
         try {
             return decode(passport, this.secret, false, this.algorithm)
         } catch (error: any) {

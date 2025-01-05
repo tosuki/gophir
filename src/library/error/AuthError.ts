@@ -2,7 +2,7 @@ import { GophirError } from "./Error"
 
 export type AuthErrorCodes =
     | "invalid_password"
-    | "invalid_email"
+    | "invalid_username"
     | "invalid_token"
     | "expired_token"
 
