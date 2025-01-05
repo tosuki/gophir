@@ -2,7 +2,9 @@ import { z } from "zod"
 
 const envSchema = z.object({
   NODE_ENV: z.string(),
-  DATABASE_URL: z.string(),
+  POSTGRES_DATABASE: z.string(),
+  POSTGRES_USER: z.string(),
+  POSTGRES_PASSWORD: z.string(),
   PORT: z.string().default("3000")
 })
 

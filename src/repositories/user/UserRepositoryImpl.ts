@@ -11,7 +11,7 @@ export class UserRepositoryImpl implements UserRepository {
     }
 
     async getByUsername(username: string): Promise<User | null> {
-        return null
+        throw new Error("to-do")
     }
 
     async save(username: string, password: string): Promise<User> {
