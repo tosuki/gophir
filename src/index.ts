@@ -1,28 +1,18 @@
 import "make-promises-safe"
-import environment from "./env"
-
-import { logger } from "./logger"
 
 import { createDatabase } from "./provider/database"
-import {
-    createUserRepository
-} from "./factory/repository"
-import { isCriticalError } from "./library/error/CriticalError"
+import { createUserRepository } from "./factory/repository"
+import { createEncryptProvider, createPassportEncoder } from "./factory/provider"
+import { AuthUseCase } from "./usecase/session/AuthUseCase"
 
 const queryBuilder = createDatabase()
 const userRepository = createUserRepository(queryBuilder)
+const passportEncoder = createPassportEncoder()
+const encryptProvider = createEncryptProvider()
 
-async function main() {
-    const user = await userRepository.save("tosuki@3", "123")
+const authUseCase = new AuthUseCase(userRepository, passportEncoder, encryptProvider)
 
-    console.log(user)
-}
-
-main()
+authUseCase.register("a", "b")
     .catch((error) => {
-        if (isCriticalError(error)) {
-            return logger.error(`Critical error: `, error.cause)
-        }
-
         console.log(error)
     })

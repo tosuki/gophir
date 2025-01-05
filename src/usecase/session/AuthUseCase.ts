@@ -6,7 +6,7 @@ import type { EncryptProvider } from "../../provider/EncryptProvider"
 import { AuthError } from "../../library/error/AuthError"
 import { isCriticalError } from "../../library/error/CriticalError"
 
-import { logger } from "../../logger"
+import { handleCriticalError } from "../../library/utils"
 
 export class AuthUseCase {
     private userRepository: UserRepository
@@ -21,6 +21,31 @@ export class AuthUseCase {
         this.userRepository = userRepository
         this.passportEncoder = passportEncoder
         this.encryptProvider = encryptProvider  
+    }
+
+    async register(username: string, password: string): Promise<string> {
+        try {
+            const conflict = await this.userRepository.getByUsername(username)
+
+            if (conflict) {
+                throw new AuthError("username_occupied", "There is already an user using this username")
+            }
+
+            const hashed = await this.encryptProvider.encrypt(password)
+            const user = await this.userRepository.save(username, hashed)
+
+            return this.passportEncoder.encodeSession({
+                id: user.id,
+                username: user.username,
+                createdAt: user.createdAt
+            })
+        } catch (error: any) {
+            if (isCriticalError(error)) {
+                handleCriticalError(error)
+            }
+
+            throw error
+        }
     }
 
     async authenticate(username: string, password: string): Promise<string> {
@@ -44,17 +69,7 @@ export class AuthUseCase {
             })
         } catch (error: any) {
             if (isCriticalError(error)) {
-                switch (error.code) {
-                    case "database_error":
-                        logger.error(`[Database Error] ${error.message}`, error.cause)
-                        break
-                    case "encrypt_error":
-                        logger.error(`[Encrypt error] Error during the encryption process`, error.cause)
-                        break
-                    default:
-                        logger.error(`[Unhandled] An unhandled error during the authentication process`, error.cause)
-                        break
-                }
+                handleCriticalError(error)
             }
 
             throw error
