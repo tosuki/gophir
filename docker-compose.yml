@@ -2,11 +2,11 @@ version: '3.1'
 
 services:
   db:
-    container_name: postgres_<name>
+    container_name: postgres_gophir
     image: postgres
     restart: always
     environment:
       POSTGRES_PASSWORD: root
-      POSTGRES_DB: put_a_name_here_please
+      POSTGRES_DB: gophir
     ports:
       - "5432:5432"
