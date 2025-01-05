@@ -29,7 +29,7 @@ export class UserRepositoryImpl implements UserRepository {
                 .insert({
                     username,
                     password,
-                    createdAt: Date.now(),
+                    createdAt: new Date().toISOString()
                 })
         } catch (error: any) {
             throw new CriticalError("database_error", error.message, error)

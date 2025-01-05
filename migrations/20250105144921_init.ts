@@ -8,7 +8,7 @@ export async function up(knex: Knex): Promise<void> {
             table.increments("id").primary().unique()
             table.string("username").unique().notNullable()
             table.string("password").notNullable()
-            table.dateTime("createdAt").notNullable()
+            table.dateTime("createdAt").notNullable().defaultTo(knex.fn.now())
         })
     // }
 }
