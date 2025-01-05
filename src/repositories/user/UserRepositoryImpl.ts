@@ -11,10 +11,18 @@ export class UserRepositoryImpl implements UserRepository {
     }
 
     async getByUsername(username: string): Promise<User | null> {
-        throw new Error("to-do")
+        return this.queryBuilder("users")
+            .where({ username })
+            .first()
     }
 
     async save(username: string, password: string): Promise<User> {
-        throw new Error("to-do")
+        return this.queryBuilder("users")
+            .returning(["id", "username", "password", "createdAt"])
+            .insert({
+                username,
+                password,
+                createdAt: Date.now(),
+            })
     }
 }
