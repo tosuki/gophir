@@ -1,20 +1,26 @@
+import { DatabaseProvider } from "../../provider/DatabaseProvider"
+
 import type { Message } from "src/model/Message";
 import type { MessageRepository } from "./MessageRepository"
-import { Knex } from "knex";
+
+import { CriticalError } from "../../library/error/CriticalError"
 
 export class MessageRepositoryImpl implements MessageRepository {
-    private knex: Knex
+    private databaseProvider: DatabaseProvider
 
-    constructor(knex: Knex) {
-        this.knex = knex
+    constructor(databaseProvider: DatabaseProvider) {
+        this.databaseProvider = databaseProvider
     }
 
-    save(content: string, authorId: number): Promise<Message> {
-        throw new Error("Method not implemented.");
+    async save(content: string, authorId: number): Promise<Message> {
+        throw new CriticalError("database_error", "to-do")
     }
 
     getById(id: number): Promise<Message | null> {
-        throw new Error("Method not implemented.");
+        throw new CriticalError("database_error", "to-do")
     }
-    
+
+    getAll(offset: number, index: number, includeAuthor?: boolean): Promise<Message[]> {
+        throw new CriticalError("database_error", "to-do")
+    }
 }

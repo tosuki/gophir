@@ -6,6 +6,8 @@ import type { EncryptProvider } from "../../provider/EncryptProvider"
 import type { Session } from "../../model/Session"
 
 import { AuthError } from "../../library/error/AuthError"
+
+import { isDatabaseError } from "../../library/error/DatabaseError"
 import { isCriticalError } from "../../library/error/CriticalError"
 
 import { handleCriticalError } from "../../library/utils"
@@ -27,12 +29,6 @@ export class AuthUseCase {
 
     async register(username: string, password: string): Promise<string> {
         try {
-            const conflict = await this.userRepository.getByUsername(username)
-
-            if (conflict) {
-                throw new AuthError("username_occupied", "There is already an user using this username")
-            }
-
             const hashed = await this.encryptProvider.encrypt(password)
             const user = await this.userRepository.save(username, hashed)
 
@@ -42,6 +38,10 @@ export class AuthUseCase {
                 createdAt: user.createdAt
             })
         } catch (error: any) {
+            if (isDatabaseError(error) && error.code === "unique_constraint") {
+                throw new AuthError("username_occupied", "There is already an user using this username")
+            }
+
             if (isCriticalError(error)) {
                 handleCriticalError(error)
             }
