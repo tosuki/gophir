@@ -14,11 +14,12 @@ export class JWTEncoder implements PassportEncoder {
     private secret: string
     private expirationTime: number
 
-    public algorithm: TAlgorithm = "HS512"
+    public algorithm: TAlgorithm
 
-    constructor(secret: string, expirationTime: number) {
+    constructor(secret: string, expirationTime: number, algorithm?: TAlgorithm) {
         this.secret = secret
         this.expirationTime = expirationTime
+        this.algorithm = algorithm || "HS512"
     }
 
     encodeSession(partialSession: PartialSession, expirationTime?: number): string {
