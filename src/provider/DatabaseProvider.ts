@@ -4,6 +4,7 @@ import { CriticalError } from "../library/error/CriticalError";
 
 export interface DatabaseProvider {
     disconnect()
+    getAll<T>(table: string, limit: number, offset: number, select?: (keyof T)[]): Promise<T[]>
     findFirst<T>(table: string, where: Partial<T>, returning?: (keyof T)[]): Promise<T | undefined>
     save<T>(table: string, value: any, returning?: (keyof T)[]): Promise<any>
     // save<I, M extends I>(value: I, table: string, returning?: (keyof M)[]): Promise<any>
@@ -14,6 +15,14 @@ export class KnexPsqlProviderImpl implements DatabaseProvider {
 
     constructor(queryBuilder: Knex) {
         this.queryBuilder = queryBuilder
+    }
+
+    getAll<T>(table: string, limit: number, offset: number, select?: (keyof T)[]): Promise<T[]> {
+        return (this.queryBuilder(table)
+                .limit(limit)
+                .offset(offset)
+                .select(select ? select as string[] : "*")) as unknown as Promise<T[]>
+                
     }
 
     async findFirst<T>(table: string, where: Partial<T>, returning?: (keyof T)[]): Promise<T | undefined> {
