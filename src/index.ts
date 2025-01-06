@@ -12,7 +12,15 @@ const encryptProvider = createEncryptProvider()
 
 const authUseCase = new AuthUseCase(userRepository, passportEncoder, encryptProvider)
 
-authUseCase.register("a", "b")
+authUseCase.authenticate("admin@4", "123")
+    .then((passport) => {
+        authUseCase.getProfile(passport)
+            .then((profile) => {
+                console.log("The profile is:", profile)
+            }).catch((error: any) => {
+                console.log(error)
+            })
+    })
     .catch((error) => {
         console.log(error)
     })

@@ -3,6 +3,8 @@ import { UserRepository } from "../../repositories/user/UserRepository"
 import type { PassportEncoder } from "./JwtEncoder"
 import type { EncryptProvider } from "../../provider/EncryptProvider"
 
+import type { Session } from "../../model/Session"
+
 import { AuthError } from "../../library/error/AuthError"
 import { isCriticalError } from "../../library/error/CriticalError"
 
@@ -72,6 +74,30 @@ export class AuthUseCase {
                 handleCriticalError(error)
             }
 
+            throw error
+        }
+    }
+
+    async getProfile(passport: string): Promise<Session> {
+        try {
+            const decoded = this.passportEncoder.decodeSession(passport)
+            const user = await this.userRepository.getByUsername(decoded.username)
+
+            if (!user) {
+                throw new AuthError("invalid_token", "The session encoded in the token is invalid")
+            }
+
+            return {
+                id: user.id,
+                username: user.username,
+                createdAt: user.createdAt,
+                expiresAt: decoded.expiresAt,
+                issuedAt: decoded.issuedAt
+            }
+        } catch (error: any) {
+            if (isCriticalError(error)) {
+                handleCriticalError(error)
+            }
             throw error
         }
     }
