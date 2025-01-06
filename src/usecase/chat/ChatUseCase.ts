@@ -1,0 +1,31 @@
+import { isDatabaseError } from "../../library/error/DatabaseError"
+import { ChatError } from "../../library/error/ChatError"
+
+import type { MessageRepository } from "../../repositories/message/MessageRepository";
+import type { AuthUseCase } from "../session/AuthUseCase";
+import type { Message } from "../../model/Message"
+
+export class ChatUseCase {
+    public auth: AuthUseCase
+    private messageRepository: MessageRepository
+
+    constructor(authUsecase: AuthUseCase, messageRepository: MessageRepository) {
+        this.auth = authUsecase
+        this.messageRepository = messageRepository
+    }
+
+    async sendMessage(content: string, passport: string): Promise<Message> {
+        try {
+            const profile = await this.auth.getProfile(passport)
+            const message = await this.messageRepository.save(content, profile.id)
+
+            return message
+        } catch (error: any) {
+            if (isDatabaseError(error) && error.code === "foreign_key_violation") {
+                throw new ChatError("invalid_message_author", "Invalid author id", error)
+            }
+
+            throw error
+        }
+    }
+}

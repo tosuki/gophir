@@ -5,6 +5,7 @@ import { createMessageRepository, createUserRepository } from "./factory/reposit
 import { createEncryptProvider, createPassportEncoder } from "./factory/provider"
 import { AuthUseCase } from "./usecase/session/AuthUseCase"
 import type { MessageRepository } from "./repositories/message/MessageRepository"
+import { ChatUseCase } from "./usecase/chat/ChatUseCase"
 
 const databaseProvider = createDatabaseProvider()
 
@@ -14,14 +15,16 @@ const passportEncoder = createPassportEncoder()
 const encryptProvider = createEncryptProvider()
 
 const authUseCase = new AuthUseCase(userRepository, passportEncoder, encryptProvider)
+const chatUseCase = new ChatUseCase(authUseCase, messageRepository)
 
-async function runQueries(authUsecase: AuthUseCase, messageRepository: MessageRepository) {
-    const user = await userRepository.save("hello", "123")
+async function runQueries(chatUsecase: ChatUseCase) {
+    const passport = await chatUseCase.auth.authenticate("admin", "123")
+    const message = await chatUsecase.sendMessage("hello world", passport)
 
-    console.log(user)
+    console.log(message)
 }
 
-runQueries(authUseCase, messageRepository)
+runQueries(chatUseCase)
     .then(() => {
         databaseProvider.disconnect()
     })
