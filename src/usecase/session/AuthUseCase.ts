@@ -42,10 +42,6 @@ export class AuthUseCase {
                 throw new AuthError("username_occupied", "There is already an user using this username")
             }
 
-            if (isCriticalError(error)) {
-                handleCriticalError(error)
-            }
-
             throw error
         }
     }

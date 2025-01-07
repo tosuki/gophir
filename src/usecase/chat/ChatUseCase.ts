@@ -28,4 +28,12 @@ export class ChatUseCase {
             throw error
         }
     }
+
+    async getMessages(offset: number, index: number): Promise<Message[]>{
+        try {
+            throw new ChatError("invalid_message_author", "a", 22)
+        } catch (error: any) {
+            throw error
+        }
+    }
 }

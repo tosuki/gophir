@@ -3,8 +3,6 @@ import { DatabaseProvider } from "../../provider/DatabaseProvider"
 import type { Message } from "src/model/Message";
 import type { MessageRepository } from "./MessageRepository"
 
-import { CriticalError } from "../../library/error/CriticalError"
-
 export class MessageRepositoryImpl implements MessageRepository {
     private databaseProvider: DatabaseProvider
 
@@ -23,7 +21,7 @@ export class MessageRepositoryImpl implements MessageRepository {
         return this.databaseProvider.findFirst<Message>("messages", { id })
     }
 
-    getAll(offset: number, index: number, includeAuthor?: boolean): Promise<Message[]> {
-        throw new CriticalError("database_error", "to-do")
+    getAll(offset: number, limit: number, includeAuthor?: boolean): Promise<Message[]> {
+        return this.databaseProvider.getAll<Message>("messages", limit, offset)
     }
 }
