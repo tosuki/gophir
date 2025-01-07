@@ -20,6 +20,40 @@ export class HttpAuthController {
         this.authUsecase = authUsecase
     }
 
+    async getProfile(request: Request, response: Response): Promise<unknown> {
+        try {
+            if (!request.headers.authorization) {
+                return response.status(HttpResponseCode.Unauthorized).json({
+                    code: "unauthorized",
+                    message: "Missing passport"
+                })
+            }
+
+            const profile = await this.authUsecase.getProfile(request.headers.authorization)
+
+            return response.status(HttpResponseCode.Found).json({
+                code: "found",
+                session: profile,
+            })
+        } catch (error: any) {
+            if (isAuthError(error) && (
+                error.code === "invalid_token" ||
+                error.code === "expired_token"
+            )) {
+               return response.status(HttpResponseCode.Unauthorized).json({
+                    code: error.code,
+                    message: error.message
+               })
+            }
+
+            logger.error(error)
+            return response.status(HttpResponseCode.InternalServerError).json({
+                code: error.code,
+                message: error.message,
+            })
+        }
+    }
+
     async authenticate(request: Request, response: Response): Promise<unknown> {
         try {
             const { username, password } = authenticationSchema.parse(request.body)

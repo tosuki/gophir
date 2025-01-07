@@ -5,5 +5,6 @@ export enum HttpResponseCode {
     Ok = 200,
     Accepted = 202,
     Unauthorized = 401,
-    Conflict = 409
+    Conflict = 409,
+    Found = 302
 }
