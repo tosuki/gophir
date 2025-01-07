@@ -4,8 +4,12 @@ import { createDatabaseProvider } from "./factory/provider"
 import { createMessageRepository, createUserRepository } from "./factory/repository"
 import { createEncryptProvider, createPassportEncoder } from "./factory/provider"
 import { AuthUseCase } from "./usecase/session/AuthUseCase"
-import type { MessageRepository } from "./repositories/message/MessageRepository"
 import { ChatUseCase } from "./usecase/chat/ChatUseCase"
+
+import { createServer } from "./http/server"
+
+import environment from "./env"
+import { logger } from "./library/logger"
 
 const databaseProvider = createDatabaseProvider()
 
@@ -17,18 +21,12 @@ const encryptProvider = createEncryptProvider()
 const authUseCase = new AuthUseCase(userRepository, passportEncoder, encryptProvider)
 const chatUseCase = new ChatUseCase(authUseCase, messageRepository)
 
-async function runQueries(chatUsecase: ChatUseCase) {
-    const passport = await chatUseCase.auth.authenticate("admin", "123")
-    const message = await chatUsecase.sendMessage("hello world", passport)
+const server = createServer(chatUseCase)
 
-    console.log(message)
-}
+process.on("exit", () => {
+    databaseProvider.disconnect()
+})
 
-runQueries(chatUseCase)
-    .then(() => {
-        databaseProvider.disconnect()
-    })
-    .catch((error: any) => {
-        console.log(error)
-        databaseProvider.disconnect()
-    })
+server.listen(environment.PORT, () => {
+    logger.info(`Listening on port ${environment.PORT}`)
+})

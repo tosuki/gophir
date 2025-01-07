@@ -2,7 +2,7 @@ import { Express } from "express"
 import type { ChatUseCase } from "src/usecase/chat/ChatUseCase"
 
 import { HttpResponseCode } from "../library/http/HttpResponseCode"
-import { HttpAuthController } from "src/controller/HttpAuthController"
+import { HttpAuthController } from "../controller/HttpAuthController"
 
 export const applyRouter = (chatUsecase: ChatUseCase, app: Express): Express => {
     const httpAuthController = new HttpAuthController(chatUsecase.auth)
