@@ -7,6 +7,7 @@ import { AuthUseCase } from "./usecase/session/AuthUseCase"
 import { ChatUseCase } from "./usecase/chat/ChatUseCase"
 
 import { createServer } from "./http/server"
+import { createSocketServer } from "./factory/socket"
 
 import environment from "./env"
 import { logger } from "./library/logger"
@@ -22,9 +23,13 @@ const authUseCase = new AuthUseCase(userRepository, passportEncoder, encryptProv
 const chatUseCase = new ChatUseCase(authUseCase, messageRepository)
 
 const server = createServer(chatUseCase)
+const socket = createSocketServer(server, chatUseCase)
 
-process.on("exit", () => {
-    databaseProvider.disconnect()
+process.on("beforeExit", async () => {
+    await socket.disconnect()
+    await databaseProvider.disconnect()
+
+    process.exit(0)
 })
 
 server.listen(environment.PORT, () => {

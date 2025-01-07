@@ -3,7 +3,7 @@ import { DatabaseError } from "../library/error/DatabaseError"
 import { CriticalError } from "../library/error/CriticalError";
 
 export interface DatabaseProvider {
-    disconnect()
+    disconnect(): Promise<void>
     getAll<T>(table: string, limit: number, offset: number, select?: (keyof T)[]): Promise<T[]>
     findFirst<T>(table: string, where: Partial<T>, returning?: (keyof T)[]): Promise<T | undefined>
     save<T>(table: string, value: any, returning?: (keyof T)[]): Promise<any>
@@ -66,7 +66,7 @@ export class KnexPsqlProviderImpl implements DatabaseProvider {
         }
     }
 
-    disconnect() {
+    disconnect(): Promise<void> {
         this.queryBuilder.destroy()
     }
 }

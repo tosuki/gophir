@@ -1,11 +1,13 @@
 import * as express from "express"
 import * as cors from "cors"
 
+import { Server as HttpServer, createHttpServer } from "http"
+
 import { ChatUseCase } from "../usecase/chat/ChatUseCase"
 
 import { applyRouter } from "./router"
 
-export const createServer = (chatUsecase: ChatUseCase): express.Express => {
+export const createServer = (chatUsecase: ChatUseCase): HttpServer => {
     const app = express()
 
     app.use(express.json())
@@ -13,5 +15,5 @@ export const createServer = (chatUsecase: ChatUseCase): express.Express => {
         origin: "*"
     }))
     
-    return applyRouter(chatUsecase, app)
+    return createHttpServer(applyRouter(chatUsecase, app))
 }
