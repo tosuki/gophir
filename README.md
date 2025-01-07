@@ -1,44 +1,62 @@
-# Typescript Starter
+# Gophir API
+This repository stores the source code of the Gophir API. Here you can find out how the authentication and the client/server communication works.
 
-[![Actions Status](https://github.com/Xetera/typescript-starter/workflows/CI%20Checks/badge.svg)](https://github.com/xetera/typescript-starter/actions)
+## Auth
+The auth was made using JWT as a passport token and those are the api routes:
 
-![banner](https://d2eip9sf3oo6c2.cloudfront.net/series/covers/000/000/052/full/EGH_Typescript_Plumbing_banner.png?1463413763)
+### /api/auth/authenticate
+The authenticate route requires the following request body:
+```json
+{
+    "username": "the username of the user",
+    "password": "the password"
+}
+```
 
-Starter Node.js project that includes Typescript tooling I end up installing for most of my Node.js repos.
+If the authenticate request gets authorized, you will receive this response:
+```json
+{//status = accepted
+    "code": "accepted",
+    "passport": "your passport"
+}
+```
+Otherwise, if an error occur and you gets refused, you may receive those errors:
+- In case of your username being invalid:
+```json
+{//status = unauthorized
+    "code": "invalid_username",
+    "message": "a more detailed explanation"
+}
+```
+- In case of your password is wrong:
+```json
+{//status = unauthorized
+    "code": "invalid_password",
+    "message": "a more detailed explanation"
+}
+```
 
-## Installation
+### /api/auth/register
+The register route requires the following request body:
+```json
+{
+    "username": "the username of the user",
+    "password": "the password"
+}
+```
 
-1. `git clone https://github.com/xetera/typescript-starter project`
-2. `cd project`
-3. `yarn`
-4. `cp .env.example .env`
-
-## Included tooling
-
-- Prettier
-- Eslint
-- Jest
-- Fast Check
-- TS Node
-- Nodemon
-- Docker
-- Github Actions
-
-## Dependencies
-
-- Dotenv
-- Winston
-
-### Why ~~no~~ yarn
-
-~~I don't think Yarn is relevant in 2019 anymore. I personally believe that the JS community is divided enough in its tooling already and we don't need even more fragmentation. Stick with npm.~~
-
-Yarn allows for using workspaces which is very useful and more flexible than lerna. It's too good to pass up.
-
-### Why no semicolons
-
-Idk I think no semi looks nicer.
-
-### Why no gulp/grunt
-
-It's 2021
+If the register request gets authorized, you will receive this response:
+```json
+{//status = created
+    "code": "created",
+    "passport": "your passport"
+}
+```
+Otherwise, if an error occur and you gets refused, you may receive those errors:
+- In case of your username is occupied by another user:
+```json
+{//status = unauthorized
+    "code": "invalid_username",
+    "message": "a more detailed explanation"
+}
+```
