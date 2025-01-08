@@ -1,7 +1,7 @@
 import * as express from "express"
 import * as cors from "cors"
 
-import { Server as HttpServer, createHttpServer } from "http"
+import { Server as HttpServer, createServer as createHttpServer } from "http"
 
 import { ChatUseCase } from "../usecase/chat/ChatUseCase"
 

@@ -67,6 +67,6 @@ export class KnexPsqlProviderImpl implements DatabaseProvider {
     }
 
     disconnect(): Promise<void> {
-        this.queryBuilder.destroy()
+        return this.queryBuilder.destroy()
     }
 }

@@ -2,7 +2,7 @@ import { Socket, NextFunction } from "socket.io"
 import { AuthUseCase } from "../usecase/session/AuthUseCase"
 
 import { logger } from "../library/logger"
-import { isAuthError } from "src/library/error/AuthError"
+import { isAuthError } from "../library/error/AuthError"
 
 export class AuthSocketHandler {
     private authUsecase: AuthUseCase
