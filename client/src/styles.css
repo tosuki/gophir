@@ -1,0 +1,26 @@
+:root {
+    --page-bg: #FFFFFF;
+    --header-bg: #5d5fef;
+    --header-fg: #ffffff;
+    --page-fg: #121212;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--page-bg);
+    color: var(--page-fg);
+}
+
+.page-container {
+    width: 100vw;
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+}
