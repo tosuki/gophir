@@ -17,3 +17,7 @@
 .header-container svg {
     cursor: pointer;
 }
+
+.header-container .bell {
+    margin-right: 20px;
+}

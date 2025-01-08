@@ -1,0 +1,31 @@
+.dropdown-menu-container {
+    position: absolute;
+
+    top: 70px;
+    right: 20px;
+
+    background-color: var(--dropdown-menu-bg);
+    border-radius: 5px;
+    color: var(--dropdown-menu-fg);
+
+    border: var(--dropdown-menu-border) solid 1px;
+}
+
+.dropdown-menu-container ul {
+    list-style: none;
+    overflow: hidden;
+}
+
+.dropdown-menu-container ul li {
+    padding: 20px;
+    padding-left: 40px;
+    padding-right: 40px;
+    cursor: pointer;
+
+    transition: background-color .3s;
+}
+
+.dropdown-menu-container ul li:hover {
+    background-color: var(--dropdown-menu-alt-bg);
+    color: var(--dropdown-menu-alt-fg);
+}
