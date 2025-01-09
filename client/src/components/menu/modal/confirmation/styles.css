@@ -1,0 +1,60 @@
+.confirmation-modal-container {
+    background-color: var(--confirmation-modal-bg);
+    color: var(--confirmation-modal-fg);
+
+    border: var(--confirmation-modal-border) solid 1px;
+    border-radius: 5px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.confirmation-modal-container .header {
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.confirmation-modal-container .header {
+    background-color: var(--confirmation-modal-header-bg);
+    color: var(--confirmation-modal-header-fg);
+}
+
+.confirmation-modal-container .header h1 {
+    font-size: 18px;
+}
+
+.confirmation-modal-container .buttons {
+    width: 100%;
+    height: 55px;
+
+    padding: 10px;
+
+    display: flex;
+}
+
+.confirmation-modal-container .buttons button {
+    width: 100%;
+    margin-left: 5px;
+    margin-right: 5px;
+
+    background-color: inherit;
+    color: var(--confirmation-modal-border);
+
+    border: solid 1px var(--confirmation-modal-border);
+    transition: background-color .5s;
+}
+
+.confirmation-modal-container .buttons .confirm-button:hover {
+    background-color: var(--confirmation-modal-header-bg);
+    color: var(--confirmation-modal-header-fg);
+}
+
+.confirmation-modal-container .buttons .refuse-button:hover {
+    background-color: brown;
+    border-color: brown;
+    color: var(--confirmation-modal-header-fg);
+}

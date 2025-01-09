@@ -4,12 +4,23 @@ import { createDropdownMenu } from "../menu/dropdown"
 
 import "./styles.css"
 import { createNotificationModal } from "../menu/modal/notification"
+import { createConfirmationModal } from "../menu/modal/confirmation"
 
 export function Header() {
+    const logoutModal = createConfirmationModal({
+        message: "Are you sure you want to quit?",
+        onConfirm: () => {
+            console.log("saindo")
+        },
+        onRefuse: () => {
+            console.log("tranquilo")
+        }
+    })
+
     const dropdownMenu = createDropdownMenu([
         { label: "Profile" },
         { label: "Settings" },
-        { label: "Exit" }
+        { label: "Exit", action: logoutModal.toggleModal }
     ])
 
     const notificationModal = createNotificationModal()
@@ -33,6 +44,7 @@ export function Header() {
             { dropdownMenu.Component }
             
         </div>
+        { logoutModal.Modal }
         { notificationModal.Modal }
         </>
     )

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
 :root {
     --page-bg: #FFFFFF;
     --header-bg: #5d5fef;
@@ -25,6 +27,13 @@
     --notification-card-bg: var(--page-bg);
     --notification-card-border: var(--dropdown-menu-border);
     --notification-card-alt-bg: var(--dropdown-menu-border);
+
+    --confirmation-modal-bg: var(--page-bg);
+    --confirmation-modal-fg: var(--page-fg);
+    --confirmation-modal-border: var(--header-bg);
+    --confirmation-modal-header-bg: var(--header-bg);
+    --confirmation-modal-header-fg: var(--header-fg);
+
 }
 
 * {
@@ -37,6 +46,10 @@
 body {
     background-color: var(--page-bg);
     color: var(--page-fg);
+}
+
+body, a, button {
+    font-family: "Roboto", sans-serif;
 }
 
 .page-container {

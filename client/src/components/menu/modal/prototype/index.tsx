@@ -21,11 +21,11 @@ export function Modal({ Content, isOpen, toggleModal }: ModalProperties & {
     )
 }
 
-export const createModal = ({ Content }: {
-    Content: FC<{ toggleModal: ToggleModalFunction }>
-}) => {
+export function createModal<T extends Record<any, any>>(properties: {
+    Content: FC<{ toggleModal: ToggleModalFunction, data?: T }>,
+    data?: T
+}) {
     const [isOpen, setOpen] = useState<boolean>(false)
-
     const toggleModal = () => setOpen(!isOpen)
 
     return {
@@ -33,7 +33,12 @@ export const createModal = ({ Content }: {
         Modal: <Modal 
             isOpen={ isOpen }
             toggleModal={ toggleModal }
-            Content={ <Content toggleModal={ toggleModal }/> }
+            Content={(
+                <properties.Content 
+                    toggleModal={ toggleModal }
+                    data={ properties.data }
+                />
+            )}
         />
     }
 }
