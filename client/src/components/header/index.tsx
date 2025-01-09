@@ -18,8 +18,6 @@ export function Header() {
     })
 
     const dropdownMenu = createDropdownMenu([
-        { label: "Profile" },
-        { label: "Settings" },
         { label: "Exit", action: logoutModal.toggleModal }
     ])
 

@@ -34,6 +34,8 @@
     --confirmation-modal-header-bg: var(--header-bg);
     --confirmation-modal-header-fg: var(--header-fg);
 
+    --chat-container-border: #DFE0EB;
+
 }
 
 * {
