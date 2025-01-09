@@ -7,7 +7,8 @@ export interface DatabaseProvider {
     getAll<T>(table: string, limit: number, offset: number, select?: (keyof T)[]): Promise<T[]>
     findFirst<T>(table: string, where: Partial<T>, returning?: (keyof T)[]): Promise<T | undefined>
     save<T>(table: string, value: any, returning?: (keyof T)[]): Promise<any>
-    // save<I, M extends I>(value: I, table: string, returning?: (keyof M)[]): Promise<any>
+    findMany<T>(table: string, where: Partial<T>, select?: (keyof T)[]): Promise<any[]>
+    delete<T>(table: string, where: Partial<T>): Promise<void>
 }
 
 export class KnexPsqlProviderImpl implements DatabaseProvider {
@@ -64,6 +65,18 @@ export class KnexPsqlProviderImpl implements DatabaseProvider {
             
             throw new CriticalError("database_error", "Unhandled database error", error)
         }
+    }
+
+    async findMany<T>(table: string, where: Partial<T>, select: (keyof T)[]): Promise<any[]> {
+        return this.queryBuilder(table)
+            .select(select ? select : "*")
+            .where(where)
+    }
+
+    delete<T>(table: string, where: Partial<T>): Promise<void> {
+        return this.queryBuilder(table)
+            .where(where)
+            .delete() 
     }
 
     disconnect(): Promise<void> {
