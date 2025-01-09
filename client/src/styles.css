@@ -9,6 +9,22 @@
     --dropdown-menu-border: #dddddd;
     --dropdown-menu-alt-bg: var(--dropdown-menu-border);
     --dropdown-menu-alt-fg: var(--dropdown-menu-fg);
+
+    --button-bg: var(--header-bg);
+
+    --notification-modal-bg: var(--dropdown-menu-bg);
+    --notification-modal-fg: var(--dropdown-menu-fg);
+
+    --notification-modal-header-bg: var(--header-bg);
+    --notification-modal-header-fg: var(--header-fg);
+    --notification-modal-border: var(--header-bg);
+
+    --notification-modal-close-button-bg: var(--notification-modal-bg);
+    --notification-modal-close-button-fg: var(--notification-modal-fg);
+
+    --notification-card-bg: var(--page-bg);
+    --notification-card-border: var(--dropdown-menu-border);
+    --notification-card-alt-bg: var(--dropdown-menu-border);
 }
 
 * {
@@ -29,4 +45,21 @@ body {
 
     display: flex;
     flex-direction: column;
+}
+
+button {
+    border: none;
+    border-radius: 5px;
+    
+    background-color: var(--header-bg);
+    color: var(--header-fg);
+
+    text-align: center;
+
+    cursor: pointer;
+    transition: opacity .3s;
+}
+
+button:hover {
+    opacity: .8;
 }
