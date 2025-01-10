@@ -26,9 +26,42 @@ export class NotificationController {
         this.authUsecase = authUsecase
     }
 
-    async getNotifications(request: Request, response: Response) {
+    async notify(request: Request, response: Response) {
         try {
             const data = notificationSchema.parse(request.body)
+            const profile = await this.authUsecase.getProfile(request.headers.authorization)
+
+            const notification = await this.notificationUsecase.notify(profile.id, data.title, data.body)
+
+            return response.status(HttpResponseCode.Created).json({
+                code: "created",
+                notification,
+            })
+        } catch (error: any) {
+            if (isZodError(error)) {
+                return response.status(HttpResponseCode.BadRequest).json({
+                    code: "bad_request",
+                    message: "Bad Request"
+                })
+            }
+
+            if (isAuthError(error)) {
+                return response.status(HttpResponseCode.Unauthorized).json({
+                    code: error.code,
+                    message: error.message
+                })
+            }
+
+            logger.error(`Unhandled error: `, error)
+            return response.status(HttpResponseCode.InternalServerError).json({
+                code: error.code,
+                message: error.message
+            })
+        }
+    }
+
+    async getNotifications(request: Request, response: Response) {
+        try {
             const profile = await this.authUsecase.getProfile(
                 request.headers.authorization
             )
@@ -39,13 +72,6 @@ export class NotificationController {
                 notifications,
             })
         } catch (error: any) {
-            if (isZodError(error)) {
-                return response.status(HttpResponseCode.BadRequest).json({
-                    code: "bad_request",
-                    message: "Bad Request"
-                })
-            }
-
             if (isAuthError(error)) {
                 return response.status(HttpResponseCode.Unauthorized).json({
                     code: error.code,
