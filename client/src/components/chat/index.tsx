@@ -14,7 +14,7 @@ export type ChatProperties = {
 export function Chat(properties: ChatProperties) {
     return (
         <div className="chat-container">
-            <div className="chat-header">
+            {/* <div className="chat-header">
                 <div className="left">
                     <div className="profile-picture"></div>
                     <div className="session-card">
@@ -22,7 +22,7 @@ export function Chat(properties: ChatProperties) {
                         <p>#00{ properties.session.id }</p>
                     </div>
                 </div>
-            </div>
+            </div> */}
             <div className="chat-body">
                 <div className="chat-messages">
                     { properties.messages.map((message) => {

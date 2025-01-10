@@ -40,11 +40,60 @@ export function HomePage() {
                     },
                     {
                         authorId: 2,
-                        content: "Just coding a chat interface.",
+                        content: "a",
                         createdAt: new Date(),
-                        id: 6,
+                        id: 2,
                         updatedAt: new Date()
-                    }
+                    },
+                    {
+                        authorId: 3,
+                        content: "Hello, how are you?",
+                        createdAt: new Date(),
+                        id: 3,
+                        updatedAt: new Date()
+                    },
+                    {
+                        authorId: 2,
+                        content: "I'm good, thank you!",
+                        createdAt: new Date(),
+                        id: 4,
+                        updatedAt: new Date()
+                    },
+                    {
+                        authorId: 3,
+                        content: "What are you working on?",
+                        createdAt: new Date(),
+                        id: 5,
+                        updatedAt: new Date()
+                    },
+                    {
+                        authorId: 2,
+                        content: "a",
+                        createdAt: new Date(),
+                        id: 2,
+                        updatedAt: new Date()
+                    },
+                    {
+                        authorId: 3,
+                        content: "Hello, how are you?",
+                        createdAt: new Date(),
+                        id: 3,
+                        updatedAt: new Date()
+                    },
+                    {
+                        authorId: 2,
+                        content: "I'm good, thank you!",
+                        createdAt: new Date(),
+                        id: 4,
+                        updatedAt: new Date()
+                    },
+                    {
+                        authorId: 3,
+                        content: "What are you working on?",
+                        createdAt: new Date(),
+                        id: 5,
+                        updatedAt: new Date()
+                    },
                 ]}
     session={{
         id: 2,
