@@ -8,16 +8,53 @@ export function HomePage() {
         <div className="page-container">
             <Header />
             <div className="home-page-container">
-                <Chat 
-                    messages={[]}
-                    session={{
-                        id: 2,
+            <Chat 
+                messages={[
+                    {
+                        authorId: 2,
+                        content: "a",
                         createdAt: new Date(),
-                        expiresAt: 0,
-                        issuedAt: 0,
-                        username: "Carlos Henrique"
-                    }}
-                />
+                        id: 2,
+                        updatedAt: new Date()
+                    },
+                    {
+                        authorId: 3,
+                        content: "Hello, how are you?",
+                        createdAt: new Date(),
+                        id: 3,
+                        updatedAt: new Date()
+                    },
+                    {
+                        authorId: 2,
+                        content: "I'm good, thank you!",
+                        createdAt: new Date(),
+                        id: 4,
+                        updatedAt: new Date()
+                    },
+                    {
+                        authorId: 3,
+                        content: "What are you working on?",
+                        createdAt: new Date(),
+                        id: 5,
+                        updatedAt: new Date()
+                    },
+                    {
+                        authorId: 2,
+                        content: "Just coding a chat interface.",
+                        createdAt: new Date(),
+                        id: 6,
+                        updatedAt: new Date()
+                    }
+                ]}
+    session={{
+        id: 2,
+        createdAt: new Date(),
+        expiresAt: 0,
+        issuedAt: 0,
+        username: "Carlos Henrique"
+    }}
+/>
+
             </div>
         </div>
     )

@@ -2,6 +2,7 @@ import { Message } from "../../model/message"
 import { Session } from "../../model/session"
 
 import { PaperPlaneRight } from "phosphor-react"
+import { MessageComponent } from "./message"
 
 import "./styles.css"
 
@@ -24,7 +25,14 @@ export function Chat(properties: ChatProperties) {
             </div>
             <div className="chat-body">
                 <div className="chat-messages">
-                    
+                    { properties.messages.map((message) => {
+                        return (
+                            <MessageComponent 
+                                { ...message }
+                                sessionId={ properties.session.id }
+                            />
+                        )
+                    })}
                 </div>
                 <div className="chat-inputs">
                     <input type="text" className="chat-text-input" />

@@ -1,0 +1,42 @@
+.message-row {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+
+    margin-bottom: 10px;
+}
+
+.start {
+    justify-content: start;
+}
+
+.end {
+    justify-content: end;
+}
+
+.start .message-container {
+    background-color: var(--page-bg);
+    border: solid 1px var(--header-bg);
+}
+
+.end .message-container {
+    background-color: var(--header-bg);
+}
+
+.end .message-container .message-header,
+.end .message-container .message-body {
+    color: var(--header-fg);
+}
+
+.message-row .end {
+    justify-content: start;
+}
+
+.message-row .message-container {
+    min-height: 40px;
+    padding: 20px;
+    border-radius: 10px;
+    
+    color: var(--page-fg);
+}
