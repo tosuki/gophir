@@ -2,6 +2,8 @@ import { NotificationRepository } from "./NotificationRepository"
 import { DatabaseProvider } from "../../provider/DatabaseProvider"
 import type { Notification } from "src/model/Notification"
 
+import { isDatabaseError } from "../../library/error/DatabaseError"
+
 export class KnexPsqlNotificationRepositoryImpl implements NotificationRepository {
     private databaseProvider: DatabaseProvider
 
@@ -10,14 +12,23 @@ export class KnexPsqlNotificationRepositoryImpl implements NotificationRepositor
     }
 
     save(title: string, body: string, target: number): Promise<Notification> {
-        throw new Error("Method not implemented.")
+        return this.databaseProvider.save<Notification>("notifications", {
+            title,
+            body,
+            target
+        })
     }
 
     getByTargetId(targetId: number): Promise<Notification[]> {
-        throw new Error("Method not implemented.")
+        return this.databaseProvider.findMany<Notification>("notifications", {
+            target: targetId
+        })
     }
 
     delete(id: number) {
+        return this.databaseProvider.delete("notifications", {
+            id: id,
+        })
         throw new Error("Method not implemented.")
     }
 }
