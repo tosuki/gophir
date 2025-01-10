@@ -7,20 +7,24 @@ import { isDatabaseError } from "../../library/error/DatabaseError"
 import { isAuthError } from "../../library/error/AuthError"
 
 import type { AuthUseCase } from "../session/AuthUseCase"
+import { EventEmitter } from "events"
 
 export class NotificationUsecase {
     private notificationRepository: NotificationRepository
     private authUsecase: AuthUseCase
+    private eventEmitter: EventEmitter
 
     constructor(notificationRepository: NotificationRepository, authUsecase: AuthUseCase) {
         this.notificationRepository = notificationRepository        
         this.authUsecase = authUsecase
+        this.eventEmitter = new EventEmitter()
     }
 
     async notify(targetId: number, title: string, body: string): Promise<Notification> {
         try {
             const notification = await this.notificationRepository.save(title, body, targetId)
 
+            this.eventEmitter.emit("notification", notification)
             return notification
         } catch (error: any) {
             if (isDatabaseError(error) && error.code === "foreign_key_violation") {
@@ -33,6 +37,10 @@ export class NotificationUsecase {
 
     getNotifications(targetId: number): Promise<Notification[]> {
         return this.notificationRepository.getByTargetId(targetId)
+    }
+
+    onNotification(callback: (notification: Notification) => unknown) {
+        this.eventEmitter.on("notification", callback)
     }
 
     async deleteNotification(passport: string, notificationId: number) {
