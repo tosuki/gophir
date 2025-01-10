@@ -29,7 +29,7 @@ export class KnexPsqlNotificationRepositoryImpl implements NotificationRepositor
     delete(id: number, targetId: number) {
         return this.databaseProvider.delete("notifications", {
             id: id,
-            targetId: number
+            targetId: targetId
         })
     }
 }
