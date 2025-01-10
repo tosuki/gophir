@@ -3,6 +3,7 @@ import { DatabaseProvider } from "../../provider/DatabaseProvider"
 import type { Notification } from "src/model/Notification"
 
 import { isDatabaseError } from "../../library/error/DatabaseError"
+import { number } from "zod"
 
 export class KnexPsqlNotificationRepositoryImpl implements NotificationRepository {
     private databaseProvider: DatabaseProvider
@@ -25,10 +26,10 @@ export class KnexPsqlNotificationRepositoryImpl implements NotificationRepositor
         })
     }
 
-    delete(id: number) {
+    delete(id: number, targetId: number) {
         return this.databaseProvider.delete("notifications", {
             id: id,
+            targetId: number
         })
-        throw new Error("Method not implemented.")
     }
 }
