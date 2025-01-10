@@ -31,6 +31,10 @@ export class NotificationUsecase {
         }
     }
 
+    getNotifications(targetId: number): Promise<Notification[]> {
+        return this.notificationRepository.getByTargetId(targetId)
+    }
+
     async deleteNotification(passport: string, notificationId: number) {
         try {
             const profile = await this.authUsecase.getProfile(passport)

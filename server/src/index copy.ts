@@ -22,18 +22,19 @@ const passportEncoder = createPassportEncoder()
 const encryptProvider = createEncryptProvider()
 
 const authUseCase = new AuthUseCase(userRepository, passportEncoder, encryptProvider)
-const chatUseCase = new ChatUseCase(authUseCase, messageRepository)
 const notificationUsecase = new NotificationUsecase(notificationRepository, authUseCase)
+const chatUseCase = new ChatUseCase(authUseCase, messageRepository)
 
-async function main() {
-    const passport = await chatUseCase.auth.authenticate("admin", "123")
-    const profile = await chatUseCase.auth.getProfile(passport)
-    
-    const notifications = await notificationUsecase.getNotifications(profile.id)
+const server = createServer(chatUseCase)
+const socket = createSocketServer(server, chatUseCase)
 
-    console.log(notifications)
-}
+process.on("beforeExit", async () => {
+    await socket.disconnect()
+    await databaseProvider.disconnect()
 
-main().catch((error) => console.log(error)).finally(() => {
-    databaseProvider.disconnect()
+    process.exit(0)
+})
+
+server.listen(environment.PORT, () => {
+    logger.info(`Listening on port ${environment.PORT}`)
 })
