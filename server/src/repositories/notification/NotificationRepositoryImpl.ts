@@ -2,10 +2,7 @@ import { NotificationRepository } from "./NotificationRepository"
 import { DatabaseProvider } from "../../provider/DatabaseProvider"
 import type { Notification } from "src/model/Notification"
 
-import { isDatabaseError } from "../../library/error/DatabaseError"
-import { number } from "zod"
-
-export class KnexPsqlNotificationRepositoryImpl implements NotificationRepository {
+export class NotificationRepositoryImpl implements NotificationRepository {
     private databaseProvider: DatabaseProvider
 
     constructor(databaseProvider: DatabaseProvider) {
