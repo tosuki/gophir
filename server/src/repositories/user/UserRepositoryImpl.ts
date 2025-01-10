@@ -1,6 +1,6 @@
 import { DatabaseProvider } from "../../provider/DatabaseProvider"
 
-import type { User } from "src/model/User";
+import type { User } from "../../model/User"
 import type { UserRepository } from "./UserRepository"
 
 export class UserRepositoryImpl implements UserRepository {
