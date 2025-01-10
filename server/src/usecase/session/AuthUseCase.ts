@@ -74,8 +74,12 @@ export class AuthUseCase {
         }
     }
 
-    async getProfile(passport: string): Promise<Session> {
+    async getProfile(passport?: string): Promise<Session> {
         try {
+            if (!passport) {
+                throw new AuthError("invalid_token", "Missing passport")
+            }
+
             const decoded = this.passportEncoder.decodeSession(passport)
             const user = await this.userRepository.getByUsername(decoded.username)
 
