@@ -17,7 +17,7 @@ export const notificationSchema = z.object({
     body: z.string(),
 })
 
-export class NotificationController {
+export class HttpNotificationController {
     private notificationUsecase: NotificationUsecase
     private authUsecase: AuthUseCase
     
