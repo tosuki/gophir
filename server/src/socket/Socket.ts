@@ -1,8 +1,10 @@
 import { Server, ServerOptions } from "socket.io"
 import { Server as HttpServer } from "http"
 import { AuthSocketHandler } from "./AuthSocketHandler"
+
 import type { ChatUseCase } from "../usecase/chat/ChatUseCase";
 import type { AuthUseCase } from "../usecase/session/AuthUseCase";
+import type { NotificationUsecase } from "../usecase/notification/NotificationUsecase"
 
 import { SocketEventHandler } from "./SocketEventHandler";
 import { DisconnectSocketEventHandler } from "./events/DisconnectSocketEvent";
@@ -14,6 +16,7 @@ export interface GlobalSocket {
 
 export class GlobalSocketImpl implements GlobalSocket {
     private chatUsecase: ChatUseCase
+    private notificationUsecase: NotificationUsecase
     private authUsecase: AuthUseCase
     private socket: Server
     
@@ -23,16 +26,18 @@ export class GlobalSocketImpl implements GlobalSocket {
     constructor(
         chatUsecase: ChatUseCase,
         authUsecase: AuthUseCase,
+        notificationUsecase: NotificationUsecase,
         httpServer: HttpServer,
         opts?: Partial<ServerOptions>
     ) {
         this.chatUsecase = chatUsecase
+        this.notificationUsecase = notificationUsecase
         this.authUsecase = authUsecase
 
         this.socket = new Server(httpServer, opts)
 
         this.auth = new AuthSocketHandler(this.authUsecase)
-        this.eventHandler = new SocketEventHandler(this.socket)
+        this.eventHandler = new SocketEventHandler(this.socket, this.notificationUsecase)
 
         this.registerListeners()
     }
