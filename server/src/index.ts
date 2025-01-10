@@ -27,7 +27,7 @@ const chatUseCase = new ChatUseCase(authUseCase, messageRepository)
 const notificationUsecase = new NotificationUsecase(notificationRepository, authUseCase)
 
 const server = createServer(authUseCase, notificationUsecase)
-const socket = createSocketServer(server, chatUseCase, authUseCase)
+const socket = createSocketServer(server, chatUseCase, authUseCase, notificationUsecase)
 
 process.on("beforeExit", async () => {
     await socket.disconnect()
