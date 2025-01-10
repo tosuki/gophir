@@ -1,13 +1,10 @@
 import { SocketEvent } from "../SocketEventHandler"
+import { Socket } from "socket.io"
 import { logger } from "../../library/logger"
 
-import type { ChatUseCase } from "src/usecase/chat/ChatUseCase"
-import type { Socket } from "socket.io"
-
-
 export class DisconnectSocketEventHandler extends SocketEvent <string> {
-    constructor(chatUsecase: ChatUseCase) {
-        super("disconnect", chatUsecase)
+    constructor() {
+        super("disconnect")
     }
 
     execute(socket: Socket, reason: string) {

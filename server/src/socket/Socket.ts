@@ -2,9 +2,9 @@ import { Server, ServerOptions } from "socket.io"
 import { Server as HttpServer } from "http"
 import { AuthSocketHandler } from "./AuthSocketHandler"
 import type { ChatUseCase } from "../usecase/chat/ChatUseCase";
+import type { AuthUseCase } from "../usecase/session/AuthUseCase";
 
-import { logger } from "../library/logger"
-import { SocketEvent, SocketEventHandler } from "./SocketEventHandler";
+import { SocketEventHandler } from "./SocketEventHandler";
 import { DisconnectSocketEventHandler } from "./events/DisconnectSocketEvent";
 import { MessageReceiveEvent } from "./events/MessageReceiveEvent";
 
@@ -14,6 +14,7 @@ export interface GlobalSocket {
 
 export class GlobalSocketImpl implements GlobalSocket {
     private chatUsecase: ChatUseCase
+    private authUsecase: AuthUseCase
     private socket: Server
     
     private auth: AuthSocketHandler
@@ -21,14 +22,17 @@ export class GlobalSocketImpl implements GlobalSocket {
 
     constructor(
         chatUsecase: ChatUseCase,
+        authUsecase: AuthUseCase,
         httpServer: HttpServer,
         opts?: Partial<ServerOptions>
     ) {
         this.chatUsecase = chatUsecase
+        this.authUsecase = authUsecase
+
         this.socket = new Server(httpServer, opts)
 
-        this.auth = new AuthSocketHandler(this.chatUsecase.auth)
-        this.eventHandler = new SocketEventHandler(this.socket, this.chatUsecase)
+        this.auth = new AuthSocketHandler(this.authUsecase)
+        this.eventHandler = new SocketEventHandler(this.socket)
 
         this.registerListeners()
     }
@@ -40,7 +44,7 @@ export class GlobalSocketImpl implements GlobalSocket {
     private registerListeners() {
         this.socket.use(this.auth.handle.bind(this.auth))
         this.eventHandler.handle(
-            new DisconnectSocketEventHandler(this.chatUsecase),
+            new DisconnectSocketEventHandler(),
             new MessageReceiveEvent(this.chatUsecase)
         )
     }

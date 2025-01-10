@@ -1,11 +1,11 @@
 import { Express } from "express"
-import type { ChatUseCase } from "src/usecase/chat/ChatUseCase"
+import type { AuthUseCase } from "src/usecase/session/AuthUseCase"
 
 import { HttpResponseCode } from "../library/http/HttpResponseCode"
 import { HttpAuthController } from "../controller/HttpAuthController"
 
-export const applyRouter = (chatUsecase: ChatUseCase, app: Express): Express => {
-    const httpAuthController = new HttpAuthController(chatUsecase.auth)
+export const applyRouter = (authUsecase: AuthUseCase, app: Express): Express => {
+    const httpAuthController = new HttpAuthController(authUsecase)
 
     app.use("/ok", (_, response): any => {
         return response.status(HttpResponseCode.Ok).json({

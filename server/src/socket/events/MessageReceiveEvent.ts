@@ -7,13 +7,18 @@ import { logger } from "../../library/logger"
 import { isCriticalError } from "../../library/error/CriticalError"
 
 export class MessageReceiveEvent extends SocketEvent <string> {
+    private chatUsecase: ChatUseCase
+
     constructor(chatUsecase: ChatUseCase) {
-        super("messageReceive", chatUsecase)
+        super("messageReceive")
+
+        this.chatUsecase = chatUsecase
     }
 
     async execute(socket: Socket, data: string) {
         try {
-            await this.chatUsecase.sendMessage(data, socket.handshake.auth.passport)
+            await this.chatUsecase.sendMessage(data, socket.session.id)
+
             return logger.debug(`${socket.session.username} sent: ${data}`)
         } catch (error: any) {
             if (!isCriticalError(error)) {

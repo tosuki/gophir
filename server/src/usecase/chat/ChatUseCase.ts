@@ -6,7 +6,7 @@ import type { AuthUseCase } from "../session/AuthUseCase";
 import type { Message } from "../../model/Message"
 
 export class ChatUseCase {
-    public auth: AuthUseCase
+    private auth: AuthUseCase
     private messageRepository: MessageRepository
 
     constructor(authUsecase: AuthUseCase, messageRepository: MessageRepository) {
@@ -14,10 +14,9 @@ export class ChatUseCase {
         this.messageRepository = messageRepository
     }
 
-    async sendMessage(content: string, passport: string): Promise<Message> {
+    async sendMessage(content: string, sessionId: number): Promise<Message> {
         try {
-            const profile = await this.auth.getProfile(passport)
-            const message = await this.messageRepository.save(content, profile.id)
+            const message = await this.messageRepository.save(content, sessionId)
 
             return message
         } catch (error: any) {
