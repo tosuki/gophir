@@ -17,16 +17,14 @@ const databaseProvider = createDatabaseProvider()
 
 const messageRepository = createMessageRepository(databaseProvider)
 const userRepository = createUserRepository(databaseProvider)
-const notificationRepository = createNotificationRepository(databaseProvider)
 const passportEncoder = createPassportEncoder()
 const encryptProvider = createEncryptProvider()
 
 const authUseCase = new AuthUseCase(userRepository, passportEncoder, encryptProvider)
-const notificationUsecase = new NotificationUsecase(notificationRepository, authUseCase)
 const chatUseCase = new ChatUseCase(authUseCase, messageRepository)
 
-const server = createServer(chatUseCase)
-const socket = createSocketServer(server, chatUseCase)
+const server = createServer(authUseCase)
+const socket = createSocketServer(server, chatUseCase, authUseCase)
 
 process.on("beforeExit", async () => {
     await socket.disconnect()
