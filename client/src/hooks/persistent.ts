@@ -1,10 +1,8 @@
-import { Cookies } from "react-cookie"
 import {
-    Dispatch,
-    SetStateAction,
-
     useState,
-    useEffect
+    useEffect,
+    Dispatch,
+    SetStateAction
 } from "react"
 
 export type PersistentState <T> = [
@@ -12,16 +10,15 @@ export type PersistentState <T> = [
     Dispatch<SetStateAction<T>>
 ]
 
-export function usePersistentState<T>(cookiesKey: string, defaultValue: T): PersistentState<T> {
-    const cookies = new Cookies()
+export function usePersistentState<T>(key: string, value: T): PersistentState<T> {
     const [state, setState] = useState<T>(() => {
-        const value = cookies.get(cookiesKey)
+        const item = localStorage.getItem(key)
 
-        return value ? JSON.parse(value) : defaultValue
+        return item ? JSON.parse(item) : value
     })
 
     useEffect(() => {
-        cookies.set(cookiesKey, state)
+        localStorage.setItem(key, JSON.stringify(state))
     }, [state])
 
     return [state, setState]

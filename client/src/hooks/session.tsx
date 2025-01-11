@@ -1,8 +1,8 @@
-import { Cookies, useCookies } from "react-cookie"
+import { usePersistentState } from "./persistent"
 import {
     useContext,
     createContext,
-    type ReactNode,
+    ReactNode,
 } from "react"
 
 import { Session } from "../model/session"
@@ -10,14 +10,28 @@ import { Session } from "../model/session"
 export type SessionContextProperties = {
     session: {
         passport: string,
-        data: Session,
+        data?: Session,
     },
     setPassport: (passport: string) => unknown
 }
 
 const SessionContext = createContext<SessionContextProperties>({} as SessionContextProperties)
-export function SessionProvider({ children: ReactNode }) {
-    const cookies = new Cookies()
-    const passport = cookies.get("AUTH_PASSPORT")
 
+export function SessionProvider(properties: {
+    children: ReactNode
+}) {
+    const [passport, setPassport] = usePersistentState<string>("SESSION_PASSPORT", "")
+
+    return (
+        <SessionContext.Provider value={{
+            session: {
+                passport,
+            },
+            setPassport
+        }}>
+            { properties.children }
+        </SessionContext.Provider>
+    )
 }
+
+export const useSession = () => useContext(SessionContext)
