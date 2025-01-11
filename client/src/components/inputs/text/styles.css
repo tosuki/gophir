@@ -1,0 +1,16 @@
+.text-input {
+    border-radius: 5px;
+    border: solid 1px var(--session-form-input-border);
+
+    padding-left: 15px;
+    font-size: 16px;
+
+    height: 60px;
+    width: 100%;
+
+    margin-bottom: 10px;
+}
+
+.text-input:focus {
+    border-color: var(--session-form-input-focus-border);
+}
