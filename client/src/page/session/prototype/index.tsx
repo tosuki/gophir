@@ -1,4 +1,6 @@
 import { createTextInput } from "../../../components/inputs/text"
+import { createPasswordInput } from "../../../components/inputs/password"
+
 import type { SessionContextProperties } from "../../../hooks/session"
 
 import "./styles.css"
@@ -25,7 +27,7 @@ export type SessionPrototypeProperties = {
 
 export function SessionPrototypePage({ title, footer }: SessionPrototypeProperties) {
     const usernameInput = createTextInput({ placeholder: "Username" })
-    const passwordInput = createTextInput({ placeholder: "Password" })
+    const passwordInput =createPasswordInput({ placeholder: "Password" })
     
     return (
         <div className="page-container">
@@ -37,7 +39,7 @@ export function SessionPrototypePage({ title, footer }: SessionPrototypeProperti
                     <div className="form-body">
                         <div className="form-inputs">
                             { usernameInput.Component }
-                            { passwordInput.Component }
+                            { passwordInput.Input }
                         </div>
                         <div className="form-buttons">
                             <button 
