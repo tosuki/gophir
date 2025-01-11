@@ -1,3 +1,5 @@
+import { useSession } from "../../../hooks/session"
+
 import { createTextInput } from "../../../components/inputs/text"
 import { createPasswordInput } from "../../../components/inputs/password"
 
@@ -17,7 +19,7 @@ export type SessionPrototypeFooterProperties = {
 
 export type SessionPrototypeProperties = {
     title: string,
-    onSubmit?: (
+    onSubmit: (
         username: string,
         password: string,
         session: SessionContextProperties,
@@ -25,10 +27,20 @@ export type SessionPrototypeProperties = {
     footer?: SessionPrototypeFooterProperties
 }
 
-export function SessionPrototypePage({ title, footer }: SessionPrototypeProperties) {
-    const usernameInput = createTextInput({ placeholder: "Username" })
-    const passwordInput =createPasswordInput({ placeholder: "Password" })
+export function SessionPrototypePage({ title, footer, onSubmit }: SessionPrototypeProperties) {
+    const sessionContext = useSession()
     
+    const usernameInput = createTextInput({ placeholder: "Username" })
+    const passwordInput = createPasswordInput({ placeholder: "Password" })
+
+    const onButtonClick = () => {
+        if (usernameInput.value.length < 1 || passwordInput.value.length < 1) {
+            return window.alert("Please fill all the empty fields")
+        }
+
+        onSubmit(usernameInput.value, passwordInput.value, sessionContext)
+    }
+
     return (
         <div className="page-container">
             <div className="session-content">
@@ -44,7 +56,7 @@ export function SessionPrototypePage({ title, footer }: SessionPrototypeProperti
                         <div className="form-buttons">
                             <button 
                                 className="submit-button"
-                                onClick={() => window.alert("hello world")}
+                                onClick={ onButtonClick }
                             >
                                 Submit
                             </button>
