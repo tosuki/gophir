@@ -1,4 +1,5 @@
 import { useSession } from "../../../hooks/session"
+import { toast } from "react-hot-toast"
 
 import { createTextInput } from "../../../components/inputs/text"
 import { createPasswordInput } from "../../../components/inputs/password"
@@ -35,7 +36,7 @@ export function SessionPrototypePage({ title, footer, onSubmit }: SessionPrototy
 
     const onButtonClick = () => {
         if (usernameInput.value.length < 1 || passwordInput.value.length < 1) {
-            return window.alert("Please fill all the empty fields")
+            return toast.error("Please fill all the empty inputs!")
         }
 
         onSubmit(usernameInput.value, passwordInput.value, sessionContext)
