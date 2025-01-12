@@ -24,7 +24,7 @@ export async function register(username: string, password: string): Promise<Resu
             data: data.passport
         }
     } catch (err: any) {
-        if (isCriticalError(err)) {
+        if (!isCriticalError(err)) {
             return {
                 error: {
                     code: err.response?.data.code as AuthErrorCodes,
