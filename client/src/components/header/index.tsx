@@ -1,6 +1,5 @@
 import { Bell, User } from "phosphor-react"
 
-import { useNavigate } from "react-router"
 import { useSession } from "../../hooks/session"
 
 import { createDropdownMenu } from "../menu/dropdown"
