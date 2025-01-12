@@ -5,7 +5,7 @@ import "./styles.css"
 export type ConfirmationModalProperties = {
     message: string
     onConfirm: () => unknown
-    onRefuse: () => unknown
+    onRefuse?: () => unknown
 }
 
 export function ConfirmationModal({ data, toggleModal }: {
@@ -22,14 +22,14 @@ export function ConfirmationModal({ data, toggleModal }: {
                     className="confirm-button"
                     onClick={ () => {
                         toggleModal()
-                        data?.onRefuse && data.onRefuse()
+                        data?.onConfirm && data.onConfirm()
                     }}
                 >Yes</button>
                 <button
                     className="refuse-button"
                     onClick={ () => {
                         toggleModal()
-                        data?.onConfirm && data.onRefuse()
+                        data?.onRefuse && data.onRefuse()
                     }}
                 >No</button>
             </div>

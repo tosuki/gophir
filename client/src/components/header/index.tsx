@@ -1,20 +1,22 @@
 import { Bell, User } from "phosphor-react"
 
-import { createDropdownMenu } from "../menu/dropdown"
+import { useNavigate } from "react-router"
+import { useSession } from "../../hooks/session"
 
-import "./styles.css"
+import { createDropdownMenu } from "../menu/dropdown"
 import { createNotificationModal } from "../menu/modal/notification"
 import { createConfirmationModal } from "../menu/modal/confirmation"
 
+import "./styles.css"
+
 export function Header() {
+    const { setPassport } = useSession()
+
     const logoutModal = createConfirmationModal({
         message: "Are you sure you want to quit?",
         onConfirm: () => {
-            console.log("saindo")
+            setPassport("")
         },
-        onRefuse: () => {
-            console.log("tranquilo")
-        }
     })
 
     const dropdownMenu = createDropdownMenu([

@@ -4,3 +4,4 @@ export type AuthErrorCodes =
     | "username_occupied"
     | "invalid_password"
     | "unhandled"
+    | "invalid_username"
