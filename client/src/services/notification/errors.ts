@@ -1,0 +1,2 @@
+export type NotificationErrors = 
+    | "unhandled"
