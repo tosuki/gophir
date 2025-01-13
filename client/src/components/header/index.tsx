@@ -9,7 +9,7 @@ import { createConfirmationModal } from "../menu/modal/confirmation"
 import "./styles.css"
 
 export function Header() {
-    const { setPassport } = useSession()
+    const { setPassport, session } = useSession()
 
     const logoutModal = createConfirmationModal({
         message: "Are you sure you want to quit?",
@@ -22,7 +22,7 @@ export function Header() {
         { label: "Exit", action: logoutModal.toggleModal }
     ])
 
-    const notificationModal = createNotificationModal()
+    const notificationModal = createNotificationModal([])
 
     return (
         <>

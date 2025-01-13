@@ -1,4 +1,5 @@
 import { createModal, ToggleModalFunction } from "../prototype"
+import { Notification } from "../../../../model/notification"
 
 import { NotificationCard } from "./card"
 
@@ -57,7 +58,7 @@ export function NotificationModal({ toggleModal }: {
     )
 }
 
-export function createNotificationModal() {
+export function createNotificationModal(notifications: Notification[]) {
     return createModal({
         Content: NotificationModal
     })
