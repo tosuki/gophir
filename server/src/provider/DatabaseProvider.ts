@@ -1,6 +1,8 @@
 import type { Knex } from "knex";
 import { DatabaseError } from "../library/error/DatabaseError"
 import { CriticalError } from "../library/error/CriticalError";
+import { User } from "src/model/User";
+import { Message } from "src/model/Message";
 
 export interface DatabaseProvider {
     disconnect(): Promise<void>
@@ -9,6 +11,7 @@ export interface DatabaseProvider {
     save<T>(table: string, value: any, returning?: (keyof T)[]): Promise<any>
     findMany<T>(table: string, where: Partial<T>, select?: (keyof T)[]): Promise<any[]>
     delete<T>(table: string, where: Partial<T>): Promise<void>
+    getAllWithReference<T, K>(table: string, referenceTable: string, referenceKey: keyof T, referenceTo: keyof K, limit: number, offset: number, select?: string[]): Promise<any[]>
 }
 
 export class KnexPsqlProviderImpl implements DatabaseProvider {
@@ -16,6 +19,15 @@ export class KnexPsqlProviderImpl implements DatabaseProvider {
 
     constructor(queryBuilder: Knex) {
         this.queryBuilder = queryBuilder
+    }
+
+
+    getAllWithReference<T, K>(table: string, referenceTable: string, referenceKey: keyof T, referenceTo: keyof K, limit: number, offset: number, select?: string[]) {
+        return this.queryBuilder(table)
+            .join(referenceTable, referenceKey as string, "=", referenceTo as string)
+            .limit(limit)
+            .offset(offset)
+            .select(select ? select : "*")
     }
 
     getAll<T>(table: string, limit: number, offset: number, select?: (keyof T)[]): Promise<T[]> {
