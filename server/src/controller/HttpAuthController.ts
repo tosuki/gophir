@@ -31,7 +31,7 @@ export class HttpAuthController {
 
             const profile = await this.authUsecase.getProfile(request.headers.authorization)
 
-            return response.status(HttpResponseCode.Found).json({
+            return response.status(HttpResponseCode.Ok).json({
                 code: "found",
                 session: profile,
             })

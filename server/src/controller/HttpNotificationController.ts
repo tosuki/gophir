@@ -67,7 +67,7 @@ export class HttpNotificationController {
             )
             const notifications = await this.notificationUsecase.getNotifications(profile.id)
 
-            return response.status(HttpResponseCode.Found).json({
+            return response.status(HttpResponseCode.Ok).json({
                 code: "found",
                 notifications,
             })
