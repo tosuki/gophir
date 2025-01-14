@@ -14,6 +14,7 @@ export type NotificationContextProperties = {
     dispatchers: {
         addNotification: (notification: Notification) => unknown
         deleteNotification: (id: number) => unknown
+        setNotifications: (notifications: Notification[]) => unknown
     }
 }
 
@@ -60,7 +61,8 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
             },
             dispatchers: {
                 addNotification,
-                deleteNotification
+                deleteNotification,
+                setNotifications
             }
         }}>
             { children }

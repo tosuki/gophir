@@ -7,13 +7,13 @@ import { isCriticalError } from "../../lib/utils"
 
 export async function getNotifications(passport: string): Promise<Result<any, NotificationErrors>> {
     try {
-        const { data } = await server.get("/notifications/all", {
+        const { data } = await server.get("/api/notifications/all", {
             headers: {
                 Authorization: passport
             }
         })
 
-        if (!data || (data && data.code !== "created")) {
+        if (!data || (data && data.code !== "found")) {
             return {
                 error: {
                     code: "unhandled",
@@ -27,6 +27,7 @@ export async function getNotifications(passport: string): Promise<Result<any, No
             data: data.notifications
         }
     } catch (error: any) {
+        console.log("It fell here dude")
         if (!isCriticalError(error)) {
             return {
                 error: {
@@ -42,13 +43,6 @@ export async function getNotifications(passport: string): Promise<Result<any, No
                 code: "unhandled",
                 message: error.message,
             }
-        }
-    }
-    
-    return {
-        error: {
-            code: "unhandled",
-            message: "unhandled error dude"
         }
     }
 }
