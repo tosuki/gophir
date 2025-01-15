@@ -1,108 +1,53 @@
+import { useEffect, useState } from "react"
+import { useSession } from "../../hooks/session"
+
+import { toast } from "react-hot-toast"
+import { createSocket } from "../../services/chat/socket"
+
 import { Header } from "../../components/header"
 import { Chat } from "../../components/chat"
+
+import type { Message} from "../../model/message"
 
 import "./styles.css"
 
 export function HomePage() {
+    const { session } = useSession()
+    const [messages, setMessages] = useState<(Message & {
+        author: { id: number, username: string }
+    })[]>([])
+
+    useEffect(() => {
+        const socket = createSocket("aaa")
+        
+        socket.on("connection_error", (error) => {
+            toast.error("Failed to connect to the server, check the console for more information")
+            console.log("Failed to connect to the server: ", error)
+        })
+
+        socket.on("connect", () => {
+            toast("Connected to the server")
+        })
+
+        return () => {
+            socket.disconnect()
+        }
+    }, [])
+
     return (
         <div className="page-container">
             <Header />
             <div className="home-page-container">
             <Chat 
-                messages={[
-                    {
-                        authorId: 2,
-                        content: "a",
-                        createdAt: new Date(),
-                        id: 2,
-                        updatedAt: new Date()
-                    },
-                    {
-                        authorId: 3,
-                        content: "Hello, how are you?",
-                        createdAt: new Date(),
-                        id: 3,
-                        updatedAt: new Date()
-                    },
-                    {
-                        authorId: 2,
-                        content: "I'm good, thank you!",
-                        createdAt: new Date(),
-                        id: 4,
-                        updatedAt: new Date()
-                    },
-                    {
-                        authorId: 3,
-                        content: "What are you working on?",
-                        createdAt: new Date(),
-                        id: 5,
-                        updatedAt: new Date()
-                    },
-                    {
-                        authorId: 2,
-                        content: "a",
-                        createdAt: new Date(),
-                        id: 2,
-                        updatedAt: new Date()
-                    },
-                    {
-                        authorId: 3,
-                        content: "Hello, how are you?",
-                        createdAt: new Date(),
-                        id: 3,
-                        updatedAt: new Date()
-                    },
-                    {
-                        authorId: 2,
-                        content: "I'm good, thank you!",
-                        createdAt: new Date(),
-                        id: 4,
-                        updatedAt: new Date()
-                    },
-                    {
-                        authorId: 3,
-                        content: "What are you working on?",
-                        createdAt: new Date(),
-                        id: 5,
-                        updatedAt: new Date()
-                    },
-                    {
-                        authorId: 2,
-                        content: "a",
-                        createdAt: new Date(),
-                        id: 2,
-                        updatedAt: new Date()
-                    },
-                    {
-                        authorId: 3,
-                        content: "Hello, how are you?",
-                        createdAt: new Date(),
-                        id: 3,
-                        updatedAt: new Date()
-                    },
-                    {
-                        authorId: 2,
-                        content: "I'm good, thank you!",
-                        createdAt: new Date(),
-                        id: 4,
-                        updatedAt: new Date()
-                    },
-                    {
-                        authorId: 3,
-                        content: "What are you working on?",
-                        createdAt: new Date(),
-                        id: 5,
-                        updatedAt: new Date()
-                    },
-                ]}
-    session={{
-        id: 2,
-        createdAt: new Date(),
-        expiresAt: 0,
-        issuedAt: 0,
-        username: "Carlos Henrique"
-    }}
-/>
+                messages={ messages }
+                session={{
+                    id: 2,
+                    createdAt: new Date(),
+                    expiresAt: 0,
+                    issuedAt: 0,
+                    username: "Carlos Henrique"
+                }}
+            />
 
             </div>
         </div>

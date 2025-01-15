@@ -31,8 +31,8 @@ export async function getNotifications(passport: string): Promise<Result<any, No
         if (!isCriticalError(error)) {
             return {
                 error: {
-                    code: error.code,
-                    message: error.message
+                    code: error.response.data.code,
+                    message: error.response.data.message
                 }
             }
         }

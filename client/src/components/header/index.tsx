@@ -22,7 +22,7 @@ export function Header() {
         { label: "Exit", action: logoutModal.toggleModal }
     ])
 
-    const notificationModal = createNotificationModal(session.passport)
+    const notificationModal = createNotificationModal()
 
     return (
         <>

@@ -8,22 +8,25 @@ import { createModal, ToggleModalFunction } from "../prototype"
 import { NotificationCard } from "./card"
 
 import "./styles.css"
-
-export type NotificationModalProperties = {
-    passport: string
-}
+import { useSession } from "../../../../hooks/session"
 
 export function NotificationModal({ toggleModal, data }: {
     toggleModal: ToggleModalFunction,
-    data?: NotificationModalProperties
 }) {
     const notificationContext = useNotification()
+    const { session, setPassport } = useSession()
 
     useEffect(() => {
-        getNotifications(data!.passport).then((result) => {
+        getNotifications(session.passport).then((result) => {
             if (result.error) {
-                console.log(result.error)
-                return toast.error(result.error.message)
+                if (result.error.code === "invalid_token" || result.error.code === "expired_token") {
+                    setPassport("")
+                    toast.error("You session has expired, please authenticate again to continue using our platform!")
+                } else {
+                    toast.error(result.error.message)
+                }
+
+                return console.log(result.error)
             }
 
             notificationContext.dispatchers.setNotifications(result.data)
@@ -56,11 +59,8 @@ export function NotificationModal({ toggleModal, data }: {
     )
 }
 
-export function createNotificationModal(passport: string) {
-    return createModal<NotificationModalProperties>({
+export function createNotificationModal() {
+    return createModal({
         Content: NotificationModal,
-        data: {
-            passport
-        }
     })
 }
