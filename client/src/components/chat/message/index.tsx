@@ -9,8 +9,6 @@ export type MessageComponentProperties = Message & {
 export function MessageComponent(properties: MessageComponentProperties) {
     const isMine = properties.authorId === properties.sessionId
 
-    console.log(isMine)
-
     return (
         <div className={`message-row ${isMine ? "end" : "start"}`}>
             <div className="message-container">

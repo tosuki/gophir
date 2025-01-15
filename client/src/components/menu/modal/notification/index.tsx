@@ -10,7 +10,7 @@ import { NotificationCard } from "./card"
 import "./styles.css"
 import { useSession } from "../../../../hooks/session"
 
-export function NotificationModal({ toggleModal, data }: {
+export function NotificationModal({ toggleModal }: {
     toggleModal: ToggleModalFunction,
 }) {
     const notificationContext = useNotification()

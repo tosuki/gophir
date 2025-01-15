@@ -12,6 +12,7 @@ export type ConnectedEventProperties = {
 
 export function createSocket(passport: string): Socket {
     return io("http://0.0.0.0:3000", {
-        auth: { passport }
+        auth: { passport },
+        autoConnect: false
     })
 }
