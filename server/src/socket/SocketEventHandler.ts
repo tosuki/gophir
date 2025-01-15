@@ -41,7 +41,7 @@ export class SocketEventHandler {
                 })
     
                 events.forEach((event) => {
-                    socket.on(event.name, event.execute.bind(event))
+                    socket.on(event.name, (values) => event.execute(socket, values))
                 })
             } catch (error: any) {
                 

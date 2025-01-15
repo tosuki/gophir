@@ -28,6 +28,7 @@ export class AuthSocketHandler {
                 error.code === "invalid_token" ||
                 error.code === "expired_token"
             )) {
+                console.log(`The passport is ${socket.handshake.auth.passport} and the result of the check is: `, error)
                 logger.debug(`Refused connection from ${socket.handshake.address} because of ${error.code}`)
                 return next(new Error(error.code))
             }

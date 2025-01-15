@@ -18,7 +18,11 @@ export function HomePage() {
     })[]>([])
 
     useEffect(() => {
-        const socket = createSocket("aaa")
+        if (!session.passport) {
+            toast.error("Failed to connect to the server due to lack of the passport, please refresh the page to try again")
+            return
+        }
+        const socket = createSocket(session.passport)
         
         socket.on("connection_error", (error) => {
             toast.error("Failed to connect to the server, check the console for more information")
