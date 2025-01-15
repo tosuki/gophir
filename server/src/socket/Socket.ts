@@ -37,7 +37,11 @@ export class GlobalSocketImpl implements GlobalSocket {
         this.socket = new Server(httpServer, opts)
 
         this.auth = new AuthSocketHandler(this.authUsecase)
-        this.eventHandler = new SocketEventHandler(this.socket, this.notificationUsecase)
+        this.eventHandler = new SocketEventHandler(
+            this.socket,
+            this.notificationUsecase,
+            this.chatUsecase
+        )
 
         this.registerListeners()
     }

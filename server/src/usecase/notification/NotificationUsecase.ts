@@ -4,7 +4,7 @@ import type { Notification } from "../../model/Notification"
 import { NotificationError } from "../../library/error/NotificationError"
 
 import { isDatabaseError } from "../../library/error/DatabaseError"
-import { isAuthError } from "../../library/error/AuthError"
+import { logger } from "../../library/logger"
 
 import type { AuthUseCase } from "../session/AuthUseCase"
 import { EventEmitter } from "events"

@@ -28,11 +28,9 @@ export class ChatUseCase {
         }
     }
 
-    async getMessages(offset: number, index: number): Promise<Message[]>{
-        try {
-            throw new ChatError("invalid_message_author", "a", 22)
-        } catch (error: any) {
-            throw error
-        }
+    getMessages(limit: number, offset: number): Promise<(Message & {
+        author?: { id: number, username: string }
+    })[]>{
+        return this.messageRepository.getAll(offset, limit, true)
     }
 }

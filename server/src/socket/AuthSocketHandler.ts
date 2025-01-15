@@ -21,6 +21,8 @@ export class AuthSocketHandler {
             const profile = await this.authUsecase.getProfile(socket.handshake.auth.passport)
 
             socket.session = profile
+
+            next()
         } catch (error: any) {
             if (isAuthError(error) && (
                 error.code === "invalid_token" ||

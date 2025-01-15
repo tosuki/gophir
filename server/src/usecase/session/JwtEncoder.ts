@@ -2,13 +2,22 @@ import type { PartialSession } from "../../model/PartialSession"
 import type { Session } from "../../model/Session"
 
 import { encode, decode, type TAlgorithm } from "jwt-simple"
+import { z } from "zod"
 
 import { AuthError } from "../../library/error/AuthError"
+import { isZodError } from "../../library/error/ZodError"
 
 export interface PassportEncoder {
     encodeSession(partialSession: PartialSession): string
     decodeSession(passport: string): Session
 }
+
+
+const sessionSchema = z.object({
+    username: z.string(),
+    issuedAt: z.number(),
+    expiresAt: z.number()
+})
 
 export class JWTEncoder implements PassportEncoder {
     private secret: string
@@ -36,7 +45,10 @@ export class JWTEncoder implements PassportEncoder {
 
     decodeSession(passport: string): Session {
         try {
-            return decode(passport, this.secret, false, this.algorithm)
+            const decoded = decode(passport, this.secret, false, this.algorithm)
+            const session = sessionSchema.parse(decoded)
+
+            return session as Session
         } catch (error: any) {
             switch (error.message) {
                 case "Not enough or too many segments":
@@ -49,6 +61,10 @@ export class JWTEncoder implements PassportEncoder {
                 default:
                     if (error.message.indexOf("Unexpected token") === 0) {
                         throw new AuthError("invalid_token", error.message, error)
+                    }
+
+                    if (isZodError(error)) {
+                        throw new AuthError("invalid_token", "wrong payload structure")
                     }
 
                     throw error

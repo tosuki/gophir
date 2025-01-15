@@ -1,6 +1,8 @@
 import { Server, Socket } from "socket.io"
+import { logger } from "../library/logger" 
 
 import { NotificationUsecase } from "../usecase/notification/NotificationUsecase"
+import { ChatUseCase } from "../usecase/chat/ChatUseCase"
 
 export abstract class SocketEvent <T> {
     public name: string
@@ -15,23 +17,35 @@ export abstract class SocketEvent <T> {
 export class SocketEventHandler {
     private socket: Server
     private notificationUsecase: NotificationUsecase
+    private chatUsecase: ChatUseCase
 
-    constructor(socket: Server, notificationUsecase: NotificationUsecase) {
+    constructor(socket: Server, notificationUsecase: NotificationUsecase, chatUsecase: ChatUseCase) {
         this.socket = socket
         this.notificationUsecase = notificationUsecase
+        this.chatUsecase = chatUsecase
     }
 
     handle(...events: SocketEvent<any>[]) {
-        this.socket.on("connection", (socket) => {
-            this.notificationUsecase.onNotification((notification) => {
-                if (socket.session.id === notification.target) {
-                    socket.emit("notification", notification)
-                }
-            })
+        this.socket.on("connection", async (socket) => {
+            logger.info(`${socket.handshake.address} connected sucessful as ${socket.session.username}`)
 
-            events.forEach((event) => {
-                socket.on(event.name, event.execute.bind(event))
-            })
+            try {
+                const messages = await this.chatUsecase.getMessages(30, 0)
+
+                socket.emit("connected", { messages })
+
+                this.notificationUsecase.onNotification((notification) => {
+                    if (socket.session.id === notification.target) {
+                        socket.emit("notification", notification)
+                    }
+                })
+    
+                events.forEach((event) => {
+                    socket.on(event.name, event.execute.bind(event))
+                })
+            } catch (error: any) {
+                
+            }
         })
     }
 }

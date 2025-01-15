@@ -8,6 +8,6 @@ export class DisconnectSocketEventHandler extends SocketEvent <string> {
     }
 
     execute(socket: Socket, reason: string) {
-        logger.error(`${socket.handshake.address} disconnected due to ${reason}`)
+        logger.error(`${socket.session.username} disconnected due to ${reason}`)
     }
 }
