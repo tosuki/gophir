@@ -53,7 +53,7 @@ export class GlobalSocketImpl implements GlobalSocket {
     private registerListeners() {
         this.socket.use(this.auth.handle.bind(this.auth))
         this.eventHandler.handle(
-            new DisconnectSocketEventHandler(),
+            new DisconnectSocketEventHandler(this.notificationUsecase),
             new MessageReceiveEvent(this.chatUsecase)
         )
     }

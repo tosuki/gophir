@@ -45,7 +45,7 @@ export class SocketEventHandler {
                     socket.on(event.name, (values) => event.execute(socket, values))
                 })
             } catch (error: any) {
-                
+                logger.error("Unhandled error: ", error)
             }
         })
     }

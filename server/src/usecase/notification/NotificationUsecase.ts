@@ -40,7 +40,13 @@ export class NotificationUsecase {
     }
 
     onNotification(callback: (notification: Notification) => unknown) {
+        logger.debug(`Creating a new notification listener`)
         this.eventEmitter.on("notification", callback)
+    }
+
+    clearListener() {
+        logger.debug("Removing notification listeners")
+        this.eventEmitter.removeAllListeners("notification")
     }
 
     async deleteNotification(passport: string, notificationId: number) {
