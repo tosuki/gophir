@@ -1,8 +1,6 @@
 import type { Knex } from "knex";
 import { DatabaseError } from "../library/error/DatabaseError"
 import { CriticalError } from "../library/error/CriticalError";
-import { User } from "src/model/User";
-import { Message } from "src/model/Message";
 
 export interface DatabaseProvider {
     disconnect(): Promise<void>
