@@ -8,7 +8,6 @@ export class DisconnectSocketEventHandler extends SocketEvent <string> {
     }
 
     execute(socket: Socket, reason: string) {
-        console.log("The socket is: ", socket)
         logger.error(`${socket.session.username} disconnected due to ${reason}`)
     }
 }
