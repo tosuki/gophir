@@ -52,15 +52,15 @@ export class KnexPsqlProviderImpl implements DatabaseProvider {
                     .on("query-error", (error) => {
                         reject(error)
                     })
-                    .then((row) => {
-                        resolve(row)
+                    .then((rows) => {
+                        resolve(rows)
                     })
                     .catch((error) => {
                         reject(error)
                     })
             })
 
-            return row
+            return row[0]
         } catch (error: any) {
             if (error.code) {
                 switch (error.code) {
