@@ -13,10 +13,10 @@ export function MessageComponent(properties: MessageComponentProperties) {
         <div className={`message-row ${isMine ? "end" : "start"}`}>
             <div className="message-container">
                 <div className="message-header">
-                    <b>{properties.authorId}</b>: { properties.content }
+                    <b>{properties.author.username}</b>
                 </div>
                 <div className="message-body">
-
+                    { properties.content }
                 </div>
             </div>
         </div>

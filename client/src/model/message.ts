@@ -2,7 +2,7 @@ export type Message = {
     id: number
     content: string
     authorId: number
-    author?: {
+    author: {
         username: string,
         password: string
     }
