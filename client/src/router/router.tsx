@@ -6,8 +6,8 @@ import {
 } from "./private"
 
 import { HomePage } from "../page/home"
-import { AuthenticatePage } from "../page/session/authenticate"
-import { RegisterPage } from "../page/session/register"
+import { AuthenticatePage } from "../page/session/auth/authenticate"
+import { RegisterPage } from "../page/session/auth/register"
 
 export default createBrowserRouter([
     { path: "/", element: <Private><HomePage /></Private> },
