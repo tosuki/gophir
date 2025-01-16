@@ -1,7 +1,7 @@
-import type { SessionContextProperties } from "../../hooks/session"
+import type { SessionContextProperties } from "../../../hooks/session"
 
 import { createSessionPage } from "./prototype"
-import { authenticate } from "../../services/auth"
+import { authenticate } from "../../../services/auth"
 import { toast } from "react-hot-toast"
 
 import { useNavigate } from "react-router"
