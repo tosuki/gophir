@@ -11,7 +11,7 @@ import "./styles.css"
 
 export function Header() {
     const navigate = useNavigate()
-    const { setPassport, session } = useSession()
+    const { setPassport } = useSession()
 
     const logoutModal = createConfirmationModal({
         message: "Are you sure you want to quit?",
