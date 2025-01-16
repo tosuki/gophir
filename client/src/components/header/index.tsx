@@ -1,6 +1,7 @@
 import { Bell, User } from "phosphor-react"
 
 import { useSession } from "../../hooks/session"
+import { useNavigate } from "react-router"
 
 import { createDropdownMenu } from "../menu/dropdown"
 import { createNotificationModal } from "../menu/modal/notification"
@@ -9,6 +10,7 @@ import { createConfirmationModal } from "../menu/modal/confirmation"
 import "./styles.css"
 
 export function Header() {
+    const navigate = useNavigate()
     const { setPassport, session } = useSession()
 
     const logoutModal = createConfirmationModal({
@@ -19,6 +21,7 @@ export function Header() {
     })
 
     const dropdownMenu = createDropdownMenu([
+        { label: "Profile", action: () => navigate("/profile") },
         { label: "Exit", action: logoutModal.toggleModal }
     ])
 

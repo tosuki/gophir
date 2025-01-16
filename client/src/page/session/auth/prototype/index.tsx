@@ -1,10 +1,10 @@
-import { useSession } from "../../../hooks/session"
+import { useSession } from "../../../../hooks/session"
 import { toast } from "react-hot-toast"
 
-import { createTextInput } from "../../../components/inputs/text"
-import { createPasswordInput } from "../../../components/inputs/password"
+import { createTextInput } from "../../../../components/inputs/text"
+import { createPasswordInput } from "../../../../components/inputs/password"
 
-import type { SessionContextProperties } from "../../../hooks/session"
+import type { SessionContextProperties } from "../../../../hooks/session"
 
 import "./styles.css"
 
