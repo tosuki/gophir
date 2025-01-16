@@ -26,13 +26,9 @@ export class SocketEventHandler {
     }
 
     handle(...events: SocketEvent<any>[]) {
-        let connectionsCount = 0
-
-
         this.socket.on("connection", async (socket) => {
             logger.info(`${socket.handshake.address} connected sucessful as ${socket.session.username}`)
             console.log(`Handling connection from ${socket.session.username} ${connectionsCount}`)
-            connectionsCount++
 
             try {
                 const messages = await this.chatUsecase.getMessages(30, 0)
