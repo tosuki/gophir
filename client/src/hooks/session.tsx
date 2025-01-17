@@ -24,7 +24,13 @@ export function SessionProvider(properties: {
     children: ReactNode
 }) {
     const [passport, setPassport] = usePersistentState<string>("SESSION_PASSPORT", "")
-    const [session, setSession] = useState<Session | undefined>(undefined)    
+    const [session, setSession] = useState<Session | undefined>({
+        id: 2,
+        createdAt: new Date(),
+        expiresAt: 0,
+        issuedAt: 0,
+        username: "admin",
+    })    
 
     useEffect(() => {
         if (passport) {

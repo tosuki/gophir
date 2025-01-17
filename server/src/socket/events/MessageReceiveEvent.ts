@@ -1,10 +1,10 @@
 import { SocketEvent } from "../SocketEventHandler"
 import { ChatUseCase } from "../../usecase/chat/ChatUseCase"
-import type { Socket } from "socket.io"
 
 import { logger } from "../../library/logger"
 
-import { isCriticalError } from "../../library/error/CriticalError"
+import type { Socket } from "socket.io"
+import { isChatError } from "../../library/error/ChatError"
 
 export class MessageReceiveEvent extends SocketEvent <string> {
     private chatUsecase: ChatUseCase
@@ -16,17 +16,23 @@ export class MessageReceiveEvent extends SocketEvent <string> {
     }
 
     async execute(socket: Socket, data: string) {
+        console.log(`${socket.session.username}: ${data}`)
         try {
-            await this.chatUsecase.sendMessage(data, socket.session.id)
+            const message = await this.chatUsecase.sendMessage(data, socket.session.id)
 
-            return logger.debug(`${socket.session.username} sent: ${data}`)
-        } catch (error: any) {
-            if (!isCriticalError(error)) {
-                logger.debug(`Refused message from ${socket.session.username} due to`, error)
-                return socket.emit("message_error", error)
+            socket.broadcast.emit("messageReceive", {
+                ...message,
+                author: {
+                    id: socket.session.id,
+                    username: socket.session.username
+                }
+            })
+        } catch (err: any) {
+            if (isChatError(err) && err.code === "invalid_message_author") {
+                return socket.emit("message_error", err)
             }
 
-            return logger.error(`An error occured when trying to process a message from ${socket.session.username}:`, error)
+            logger.error
         }
     }
 }

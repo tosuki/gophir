@@ -1,5 +1,5 @@
 export type Message = {
-    id: number
+    messageId: number
     content: string
     authorId: number
     author: {

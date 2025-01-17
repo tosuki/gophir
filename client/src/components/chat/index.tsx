@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 
 import { useSession } from "../../hooks/session"
 import { useSocket } from "../../hooks/socket"
@@ -13,28 +13,30 @@ import type { Message } from "../../model/message"
 import "./styles.css"
 
 export function Chat() {
-    const socket = useSocket()
+    const socket = useSocket().connect()
     const { session } = useSession()
 
     const [messages, setMessages] = useState<(Message)[]>([])
     const [messageInputValue, setMessageInputValue] = useState<string>("")
 
 
-    const onSubmitButton = () => {
+    const onSubmitButton = useCallback(() => {
         if (!messageInputValue) {
             return
         }
 
+        if (!socket || (socket && !socket.active)) {
+            return toast.error("You are not connected to the server!")
+        }
+
         socket.emit("messageReceive", messageInputValue)
         setMessageInputValue("")
-    } 
+    }, [socket, messageInputValue, setMessageInputValue])
 
     useEffect(() => {
         if (!socket) {
             throw new Error("Invalid useSocket usage, it must be used inside a SocketProvider")
         }
-
-        socket.connect()
 
         socket.on("connection_error", (error) => {
             toast.error("Failed to connect to the server, check the console for more information!")
@@ -45,14 +47,26 @@ export function Chat() {
             setMessages(messages)
         })
 
-        socket.on("messageReceive", (message) => {
-            console.log(message)
+        socket.on("messageReceive", (message: Message) => {
+            console.log(`${message.author.username}: ${message.content}`)
+            setMessages((previousMessages) => {
+                return [...previousMessages, message]
+            })
+            console.log(messages)
         })
 
         return () => {
+            socket.off("connected")
+            socket.off("messageReceive")
+            socket.off("connection_error")
+
             socket.disconnect()
         }
     }, [])
+
+    if (!session.data) {
+        return <h1>Loading</h1>
+    }
 
     return (
         <div className="chat-container">
@@ -60,7 +74,8 @@ export function Chat() {
                 <div className="chat-messages">
                     { messages.map((message) => {
                         return (
-                            <MessageComponent 
+                            <MessageComponent
+                                key={ message.messageId }
                                 { ...message }
                                 sessionId={ session.data!.id }
                             />

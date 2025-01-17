@@ -15,9 +15,9 @@ export function DropdownMenu({ items, isOpen }: {
     return (
         <>{ isOpen && (
             <div className="dropdown-menu-container">
-                <ul>{ items.map((item) => {
+                <ul>{ items.map((item, index) => {
                     return (
-                        <li onClick={item.action}>{ item.label }</li>
+                        <li key={ index } onClick={item.action}>{ item.label }</li>
                     )
                 }) }</ul>
             </div>
