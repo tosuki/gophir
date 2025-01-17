@@ -8,7 +8,7 @@ import { HttpAuthController } from "../controller/HttpAuthController"
 import { HttpNotificationController } from "../controller/HttpNotificationController"
 
 export const applyRouter = (authUsecase: AuthUseCase, notificationUsecase: NotificationUsecase, app: Express): Express => {
-    const httpAuthController = new HttpAuthController(authUsecase)
+    const httpAuthController = new HttpAuthController(authUsecase, notificationUsecase)
     const httpNotificationController = new HttpNotificationController(notificationUsecase, authUsecase)
 
     app.use("/ok", (_, response): any => {

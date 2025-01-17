@@ -1,5 +1,7 @@
 import type { Request, Response } from "express"
+
 import { AuthUseCase } from "../usecase/session/AuthUseCase"
+import { NotificationUsecase } from "../usecase/notification/NotificationUsecase"
 import { HttpResponseCode } from "../library/http/HttpResponseCode"
 
 import { z } from "zod"
@@ -15,8 +17,9 @@ export const authenticationSchema = z.object({
 
 export class HttpAuthController {
     private authUsecase: AuthUseCase
+    private notificationUsecase: NotificationUsecase
 
-    constructor(authUsecase: AuthUseCase) {
+    constructor(authUsecase: AuthUseCase, notificationUsecase: NotificationUsecase) {
         this.authUsecase = authUsecase
     }
 
