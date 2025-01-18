@@ -7,7 +7,7 @@ import { AuthUseCase } from "./usecase/session/AuthUseCase"
 import { ChatUseCase } from "./usecase/chat/ChatUseCase"
 
 import { createServer } from "./http/server"
-import { createSocketServer } from "./factory/socket"
+import { createSocketServer } from "./factory/socket.ts"
 
 import environment from "./env"
 import { logger } from "./library/logger"
