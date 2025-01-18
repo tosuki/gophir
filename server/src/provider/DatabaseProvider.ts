@@ -10,6 +10,8 @@ export interface DatabaseProvider {
     findMany<T>(table: string, where: Partial<T>, select?: (keyof T)[]): Promise<any[]>
     delete<T>(table: string, where: Partial<T>): Promise<void>
     getAllWithReference<T, K>(table: string, referenceTable: string, referenceKey: keyof T, referenceTo: keyof K, limit: number, offset: number, select?: string[]): Promise<any[]>
+
+    edit<T>(table: string, where: Partial<T>, newValue: Partial<T>, returning: (keyof T)[]): Promise<any>
 }
 
 export class KnexPsqlProviderImpl implements DatabaseProvider {
@@ -41,6 +43,30 @@ export class KnexPsqlProviderImpl implements DatabaseProvider {
             .where(where)
             .select(returning as string[] || "*")
             .first()
+    }
+
+    async edit<T>(table: string, where: Partial<T>, newValue: Partial<T>, returning: (keyof T)[]): Promise<any> {
+        try {
+            const rows = await new Promise((resolve, reject) => {
+                this.queryBuilder
+                    .returning(returning.length ? returning as string[] : "*")
+                    .where(where)
+                    .update(newValue)
+                    .on("query-error", (error) => {
+                        reject(error)
+                    })
+                    .then((rows) => {
+                        resolve(rows)
+                    })
+                    .catch((error) => {
+                        reject(error)
+                    })
+            })
+
+            return rows[0]
+        } catch (error: any) {
+            throw error
+        }
     }
 
     async save<T>(table: string, value: any, returning: (keyof T)[] = []): Promise<any> {

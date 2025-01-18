@@ -10,12 +10,17 @@ export class KnexPostgresRepositoryImpl implements ProfileRepository {
         this.queryBuilder = databaseProvider
     }
 
-    async save(authorId: number, description: string): Promise<Profile> {
-        throw new Error("TO-DO")
+    save(authorId: number, description: string): Promise<Profile> {
+        return this.queryBuilder.save<Profile>("profile", {
+            authorId,
+            description
+        })
     }
 
-    async getByAuthorId(authorId: number): Promise<Profile | null> {
-        throw new Error("TO-DO")
+    getByAuthorId(authorId: number): Promise<Profile | null> {
+        return this.queryBuilder.findFirst<Profile>("profile", {
+            authorId
+        })
     }
 
     async editProfile(authorId: number, profile: Partial<Omit<Profile, "authorId">>) {
