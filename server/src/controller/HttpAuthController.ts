@@ -23,7 +23,7 @@ export class HttpAuthController {
         this.authUsecase = authUsecase
     }
 
-    async getProfile(request: Request, response: Response): Promise<unknown> {
+    async getSession(request: Request, response: Response): Promise<unknown> {
         try {
             if (!request.headers.authorization) {
                 return response.status(HttpResponseCode.Unauthorized).json({
@@ -32,7 +32,7 @@ export class HttpAuthController {
                 })
             }
 
-            const profile = await this.authUsecase.getProfile(request.headers.authorization)
+            const profile = await this.authUsecase.getSession(request.headers.authorization)
 
             return response.status(HttpResponseCode.Ok).json({
                 code: "found",

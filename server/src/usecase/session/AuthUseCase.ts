@@ -74,7 +74,7 @@ export class AuthUseCase {
         }
     }
 
-    async getProfile(passport?: string): Promise<Session> {
+    async getSession(passport?: string): Promise<Session> {
         try {
             if (!passport) {
                 throw new AuthError("invalid_token", "Missing passport")

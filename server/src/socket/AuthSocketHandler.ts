@@ -18,10 +18,7 @@ export class AuthSocketHandler {
         }
 
         try {
-            const profile = await this.authUsecase.getProfile(socket.handshake.auth.passport)
-
-            socket.session = profile
-
+            socket.session = await this.authUsecase.getSession(socket.handshake.auth.passport)
             next()
         } catch (error: any) {
             if (isAuthError(error) && (
