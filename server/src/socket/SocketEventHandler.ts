@@ -32,7 +32,6 @@ export class SocketEventHandler {
             try {
                 const messages = await this.chatUsecase.getMessages(30, 0)
                 
-                console.log(messages)
                 socket.emit("connected", { messages })
 
                 this.notificationUsecase.onNotification((notification) => {
