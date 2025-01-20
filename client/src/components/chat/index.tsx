@@ -45,6 +45,7 @@ export function Chat() {
 
         socket.on("connected", ({ messages }) => {
             setMessages(messages)
+            console.log(messages)
         })
 
         socket.on("messageReceive", (message: Message) => {
