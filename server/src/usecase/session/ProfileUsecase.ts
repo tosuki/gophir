@@ -1,6 +1,5 @@
 import { ProfileRepository } from "../../repositories/profile/ProfileRepository"
 import { UserRepository } from "../../repositories/user/UserRepository"
-import { PassportEncoder } from "./JwtEncoder"
 
 import { Profile } from "../../model/Profile"
 
@@ -10,16 +9,13 @@ import { isDatabaseError } from "../../library/error/DatabaseError"
 export class ProfileUsecase {
     private profileRepository: ProfileRepository
     private userRepository: UserRepository
-    private passportEncoder: PassportEncoder
 
     constructor(
         userRepository: UserRepository,
         profileRepository: ProfileRepository,
-        passportEncoder: PassportEncoder,
     ) {
         this.userRepository = userRepository
         this.profileRepository = profileRepository
-        this.passportEncoder = passportEncoder
     }
 
     public async setProfile(authorId: number, description: string): Promise<Profile> {
