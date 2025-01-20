@@ -2,8 +2,10 @@ import { ProfileRepository } from "../../repositories/profile/ProfileRepository"
 import { UserRepository } from "../../repositories/user/UserRepository"
 import { PassportEncoder } from "./JwtEncoder"
 
-import { Session } from "../../model/Session"
 import { Profile } from "../../model/Profile"
+
+import { ProfileError } from "../../library/error/ProfileError"
+import { isDatabaseError } from "../../library/error/DatabaseError"
 
 export class ProfileUsecase {
     private profileRepository: ProfileRepository
@@ -20,7 +22,56 @@ export class ProfileUsecase {
         this.passportEncoder = passportEncoder
     }
 
-    getProfile(passport: string): Promise<Profile> {
-        throw new Error("TO-DO")
+    public async setProfile(authorId: number, description: string): Promise<Profile> {
+        try {
+            const profileSet = await this.profileRepository.editProfile(authorId, {
+                description
+            })
+
+            if (!profileSet) {
+                return await this.createProfile(authorId, profile.description)
+            } 
+
+            return profileSet
+        } catch (error: any) {
+            throw error
+        }
+    }
+
+    private async createProfile(authorId: number, description: string) {
+        try {
+            const profile = await this.profileRepository.save(authorId, description)
+            
+            return profile
+        } catch (error: any) {
+            if (isDatabaseError(error)) {
+                switch (error.code) {
+                    case "foreign_key_violation":
+                        throw new ProfileError("invalid_session", `${authorId} doesn't exist in our database`, error)
+                    case "unique_constraint":
+                        throw new ProfileError("conflict", `${authorId} already got a profile created in our database`)
+                    default:
+                        throw error
+                }
+            }
+
+            throw error
+        }
+    }
+
+    async getProfile(username: string): Promise<Profile> {
+        try {
+            const user = await this.userRepository.getByUsername(username)
+
+            if (!user) {
+                   throw new ProfileError("invalid_username", "That user doesn't exist in our database") 
+            }
+
+            const profile = await this.profileRepository.getByAuthorId(user.id)
+
+            return profile       
+        } catch (error: any) {
+            throw error
+        } 
     }
 }
