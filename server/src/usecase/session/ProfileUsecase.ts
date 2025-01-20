@@ -29,7 +29,7 @@ export class ProfileUsecase {
             })
 
             if (!profileSet) {
-                return await this.createProfile(authorId, profile.description)
+                return await this.createProfile(authorId, description)
             } 
 
             return profileSet
