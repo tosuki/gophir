@@ -11,22 +11,22 @@ export class NotificationRepositoryImpl implements NotificationRepository {
 
     save(title: string, body: string, target: number): Promise<Notification> {
         return this.databaseProvider.save<Notification>("notifications", {
-            title,
-            body,
-            target
+            value: { title, body, target }
         })
     }
 
     getByTargetId(targetId: number): Promise<Notification[]> {
         return this.databaseProvider.findMany<Notification>("notifications", {
-            target: targetId
+            where: {
+                target: targetId
+            }
         })
     }
 
     delete(id: number, targetId: number) {
-        return this.databaseProvider.delete("notifications", {
+        return this.databaseProvider.delete("notifications", { where: {
             id: id,
             targetId: targetId
-        })
+        }})
     }
 }

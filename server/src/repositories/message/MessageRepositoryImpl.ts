@@ -12,15 +12,16 @@ export class MessageRepositoryImpl implements MessageRepository {
     }
 
     save(content: string, authorId: number): Promise<Message> {
-        return this.databaseProvider.save<Message>("messages", {
-            content,
-            authorId,
+        return this.databaseProvider.save("messages", {
+            value: { content, authorId }
         })
     }
 
     getById(id: number): Promise<Message | null> {
         return this.databaseProvider.findFirst<Message>("messages", {
-            messageId: id
+            where: {
+                messageId: id,
+            }
         })
     }
 
@@ -28,14 +29,17 @@ export class MessageRepositoryImpl implements MessageRepository {
     private async getAllMessagesWithAuthor(offset: number, limit: number): Promise<(Message & {
         author?: { id: number, username: string }
     })[]> {
-        const rawMessages = await this.databaseProvider.getAllWithReference<Message, User>(
+        const rawMessages = await this.databaseProvider.selectWithReference<Message, User>(
             "messages",
-            "users",
-            "authorId",
-            "id",
-            limit,
-            offset,
-            ["messages.*", "users.id", "users.username"]
+            {
+                referenceTable: "users",
+                referenceKey: "authorId",
+                referenceTo: "id",
+                select: ["messages.*", "users.id", "users.username"],
+                orderBy: "createdAt",
+                limit,
+                offset,
+            },
         )
 
         return rawMessages.map(({ id, username, ...message }) => {
@@ -51,6 +55,6 @@ export class MessageRepositoryImpl implements MessageRepository {
     })[]> {
         return includeAuthor ? 
             this.getAllMessagesWithAuthor(offset, limit) :
-            this.databaseProvider.getAll("messages", limit, offset)
+            this.databaseProvider.selectAll("messages", { limit, offset, orderBy: "createdAt" })
     }
 }

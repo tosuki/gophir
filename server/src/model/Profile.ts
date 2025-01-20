@@ -2,7 +2,7 @@ import { User } from "./User"
 
 export type Profile = {
     authorId: number
-    description: number
+    description: string
     author: User
 }
 

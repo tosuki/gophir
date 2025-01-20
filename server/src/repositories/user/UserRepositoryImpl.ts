@@ -11,10 +11,14 @@ export class UserRepositoryImpl implements UserRepository {
     }
 
     getByUsername(username: string): Promise<User | null> {
-        return this.databaseProvider.findFirst<User>("users", { username })
+        return this.databaseProvider.findFirst<User>("users", { where: {
+            username
+        }})
     }
 
     save(username: string, password: string): Promise<User> {
-        return this.databaseProvider.save<User>("users", { username, password })
+        return this.databaseProvider.save<User>("users", {
+            value: { username, password }
+        })
     }
 }
