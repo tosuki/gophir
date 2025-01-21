@@ -38,6 +38,13 @@
 
     --session-form-input-border: var(--dropdown-menu-border);
     --session-form-input-focus-border: var(--header-bg);
+    
+    --profile-description-edit-button-bg: #36c26d;
+    --profile-description-edit-button-fg: var(--header-fg);
+
+    --profile-headers-bg: var(--header-bg);
+    --profile-headers-fg: var(--header-fg);
+    --profile-container-border: var(--header-bg);
 }
 
 * {

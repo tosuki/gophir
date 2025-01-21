@@ -1,24 +1,54 @@
 import { Header } from "../../../components/header"
 
-import { useSession } from "../../../hooks/session"
-
 import "./styles.css"
 
-export function ProfilePage() {
-    const { session } = useSession()
+function ProfileDataWindow(properties: {
+    title: string,
+    data: string
+}) {
+    return (
+        <div className="profile-data-container">
+            <div className="profile-data-container-header">
+                <h1>{ properties.title  }</h1>
+            </div>
+            <div className="profile-data-container-body">
+                { properties.data }
+            </div>
+        </div>
+    )
+}
 
+export function ProfilePage() {
     return (
         <div className="page-container">
             <Header />
-            <div className="profile-page-content">
-                <div className="left">
-                    <h1>Left</h1>
-                </div>
-                <div className="right">
-                    <div className="profile-row">
-                        <h1>Username</h1>
-                        <p>{ session.data!.username }</p>
+            <div className="profile-page-container">
+                <div className="profile-container">
+                    <div className="left">
+                        <div className="profile-picture-container">
+                        </div>
+                        <ProfileDataWindow 
+                            title="Username"
+                            data="test"
+                        />
+                        <ProfileDataWindow 
+                            title="Created at"
+                            data={ new Date().toISOString() }
+                        />
                     </div>
+                    <div className="right">
+                        <div className="profile-description-container">
+                            <div className="profile-description-container-header">
+                                <h1>Description</h1>
+                                <button className="edit-button">
+                                    Edit
+                                </button>
+                            </div>
+                            <div className="profile-description-container-body">
+                                <p>The description should be here you know?</p>
+                            </div>
+                        </div>
+                    </div>                    
                 </div>
             </div>
         </div>
