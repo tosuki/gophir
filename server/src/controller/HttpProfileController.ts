@@ -16,7 +16,13 @@ export class HttpProfileController {
         this.profileUsecase = profileUsecase
         this.authUsecase = authUsecase
     }
-   
+    
+    async setProfile(request: Request, response: Response) {
+        try {
+
+        } catch (error: any) {}
+    }
+     
     async getProfile(request: Request, response: Response) {
         try {
             const profile = await this.profileUsecase.getProfile(request.params.username)
@@ -26,16 +32,6 @@ export class HttpProfileController {
                 profile
             })
         } catch (error: any) {
-            if (isAuthError(error) && (
-                error.code === "invalid_token" ||
-                error.code === "expired_token"
-            )) {
-                return response.status(HttpResponseCode.Unauthorized).json({
-                    code: error.code,
-                    message: error.message
-                })
-            }
-
             logger.error(error)
             return response.status(HttpResponseCode.InternalServerError).json({
                 code: error.code,
