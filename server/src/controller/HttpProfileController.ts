@@ -5,6 +5,7 @@ import { AuthUseCase } from "../usecase/session/AuthUseCase"
 
 import { HttpResponseCode } from "../library/http/HttpResponseCode"
 
+import { isProfileError } from "../library/error/ProfileError"
 import { isAuthError } from "../library/error/AuthError"
 import { logger } from "../library/logger"
 
@@ -62,6 +63,13 @@ export class HttpProfileController {
                 profile
             })
         } catch (error: any) {
+            if (isProfileError(error)) {
+                return response.status(HttpResponseCode.NotFound).json({
+                    code: error.code,
+                    message: error.message,
+                })
+            }
+
             logger.error(error)
             return response.status(HttpResponseCode.InternalServerError).json({
                 code: error.code,

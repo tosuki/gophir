@@ -5,3 +5,5 @@ export class ProfileError extends GophirError <
     | "invalid_session"
     | "conflict"
 > {}
+
+export const isProfileError = (error: any): error is ProfileError => error instanceof ProfileError
