@@ -21,5 +21,5 @@ export const createServer = (
         origin: "*"
     }))
 
-    return createHttpServer(applyRouter(authUsecase, notificationUsecase, app))
+    return createHttpServer(applyRouter(authUsecase, notificationUsecase, profileUsecase, app))
 }

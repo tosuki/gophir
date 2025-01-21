@@ -29,7 +29,7 @@ export class HttpNotificationController {
     async notify(request: Request, response: Response) {
         try {
             const data = notificationSchema.parse(request.body)
-            const profile = await this.authUsecase.getProfile(request.headers.authorization)
+            const profile = await this.authUsecase.getSession(request.headers.authorization)
 
             const notification = await this.notificationUsecase.notify(profile.id, data.title, data.body)
 
@@ -62,7 +62,7 @@ export class HttpNotificationController {
 
     async getNotifications(request: Request, response: Response) {
         try {
-            const profile = await this.authUsecase.getProfile(
+            const profile = await this.authUsecase.getSession(
                 request.headers.authorization
             )
             const notifications = await this.notificationUsecase.getNotifications(profile.id)
