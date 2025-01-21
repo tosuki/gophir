@@ -19,8 +19,38 @@ export class HttpProfileController {
     
     async setProfile(request: Request, response: Response) {
         try {
+            const session = await this.authUsecase.getSession(request.headers.authorization)
+            
+            if (!request.body.description) {
+                return response.status(HttpResponseCode.BadRequest).json({
+                    code: "bad_request",
+                    message: "Missing new profile information"
+                })
+            }
 
-        } catch (error: any) {}
+            const profile = await this.profileUsecase.setProfile(session.id, request.body.description)
+            
+            return response.status(HttpResponseCode.Created).json({
+                code: "created",
+                profile,
+            })
+        } catch (error: any) {
+            if (isAuthError(error) && (
+                error.code === "invalid_token" ||
+                error.code === "expired_token"
+            )) {
+                return response.status(HttpResponseCode.Unauthorized).json({
+                    code: error.code,
+                    message: error.message
+                })
+            }
+
+            logger.error(error)
+            return response.status(HttpResponseCode.InternalServerError).json({
+                code: error.code,
+                message: error.message,
+            })
+        }
     }
      
     async getProfile(request: Request, response: Response) {
