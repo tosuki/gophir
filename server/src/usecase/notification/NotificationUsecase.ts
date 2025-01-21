@@ -51,7 +51,7 @@ export class NotificationUsecase {
 
     async deleteNotification(passport: string, notificationId: number) {
         try {
-            const profile = await this.authUsecase.getProfile(passport)
+            const profile = await this.authUsecase.getSession(passport)
             
             await this.notificationRepository.delete(notificationId, profile.id)
         } catch (error: any) {
