@@ -41,7 +41,7 @@ export async function getProfile(passport: string): Promise<Result<Session, Auth
             error: {
                 code: "unhandled",
                 message: error.message,
-                cause: error
+                cause: error,
             }
         }
     }
