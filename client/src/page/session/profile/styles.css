@@ -76,8 +76,6 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-
-    cursor: pointer;
 }
 
 .profile-page-container .profile-container .right .profile-description-container-header h1 {
