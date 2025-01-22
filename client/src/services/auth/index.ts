@@ -6,7 +6,7 @@ import { server } from "../server"
 import { Session } from "../../model/session"
 
 
-export async function getProfile(passport: string): Promise<Result<Session, AuthErrorCodes>> {
+export async function getSession(passport: string): Promise<Result<Session, AuthErrorCodes>> {
     try {
         const response = await server.get("/api/session/check", {
             headers: {

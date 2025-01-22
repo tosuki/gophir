@@ -8,7 +8,7 @@ import {
 } from "react"
 
 import { Session } from "../model/session"
-import { getProfile } from "../services/auth"
+import { getSession } from "../services/auth"
 
 export type SessionContextProperties = {
     session: {
@@ -34,7 +34,7 @@ export function SessionProvider(properties: {
 
     useEffect(() => {
         if (passport) {
-            getProfile(passport).then((result) => {
+            getSession(passport).then((result) => {
                 if (result.error) {
                     return console.log("Failed to get the session data due to ", result.error)
                 }
