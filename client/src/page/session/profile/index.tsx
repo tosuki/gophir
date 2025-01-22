@@ -1,10 +1,17 @@
+import { useEffect, useState } from "react"
 import { Header } from "../../../components/header"
+
+import { useSession } from "../../../hooks/session"
+import { getProfile } from "../../../services/profile"
+import { toast } from "react-hot-toast"
+
+import { Profile } from "../../../model/profile"
 
 import "./styles.css"
 
 function ProfileDataWindow(properties: {
     title: string,
-    data: string
+    data: any
 }) {
     return (
         <div className="profile-data-container">
@@ -19,6 +26,22 @@ function ProfileDataWindow(properties: {
 }
 
 export function ProfilePage() {
+    const { session } = useSession()
+    const [profile, _] = useState<Profile | null>(null)
+    
+    useEffect(() => {
+        if (!session.data) {
+            return console.log("Waiting for session be loaded")
+        }
+
+        getProfile(session.data!.username).then((result) => {
+            console.log(result)
+        }).catch((error) => {
+            console.log("An handled error occurred on fetching profile: ", error)
+            toast.error("An unhandled error occured, check the console for more information!")
+        })
+    }, [])
+
     return (
         <div className="page-container">
             <Header />
@@ -29,11 +52,11 @@ export function ProfilePage() {
                         </div>
                         <ProfileDataWindow 
                             title="Username"
-                            data="test"
+                            data={ session.data!.username }
                         />
                         <ProfileDataWindow 
                             title="Created at"
-                            data={ new Date().toISOString() }
+                            data={ session.data!.createdAt.toLocaleString()  }
                         />
                     </div>
                     <div className="right">
@@ -45,7 +68,7 @@ export function ProfilePage() {
                                 </button>
                             </div>
                             <div className="profile-description-container-body">
-                                <p>The description should be here you know?</p>
+                                <p>{ profile ? profile.description : "There should be something here, but i don't know what xD" }</p>
                             </div>
                         </div>
                     </div>                    

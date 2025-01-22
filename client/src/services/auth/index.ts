@@ -8,11 +8,12 @@ import { Session } from "../../model/session"
 
 export async function getProfile(passport: string): Promise<Result<Session, AuthErrorCodes>> {
     try {
-        const response = await server.get("/api/session/profile", {
+        const response = await server.get("/api/session/check", {
             headers: {
                 Authorization: passport
             }
         })
+
 
         if (!response.data || (response.data && response.data.code !== "found")) {
             return {
@@ -23,7 +24,7 @@ export async function getProfile(passport: string): Promise<Result<Session, Auth
                 }
             }
         }
-
+        
         return {
             data: response.data.session
         }

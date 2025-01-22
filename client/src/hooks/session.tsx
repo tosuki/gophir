@@ -38,7 +38,7 @@ export function SessionProvider(properties: {
                 if (result.error) {
                     return console.log("Failed to get the session data due to ", result.error)
                 }
-    
+                
                 setSession(result.data)
             }).catch((error) => {
                 console.log("Failed to get the session data due to: ", error)
