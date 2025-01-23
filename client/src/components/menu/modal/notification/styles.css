@@ -16,20 +16,16 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-}
 
-.notification-modal-container .header {
     width: 100%;
     height: 60px;
 
-
     background-color: var(--notification-modal-header-bg);
-    border-bottom: var(--notification-modal-border) solid 2px;
+    color: var(--notification-modal-header-fg);
 }
 
 .notification-modal-container .header h1 {
     font-size: 24px;
-    color: var(--notification-modal-header-fg);
 }
 
 .notification-modal-container .body {
