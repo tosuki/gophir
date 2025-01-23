@@ -61,7 +61,7 @@
     height: 250px;
 
     border-radius: 5px;
-    border: solid var(--header-bg) 2px;
+    border: solid var(--header-bg) 1px;
 }
 
 .profile-modal-container .body .left .profile-info-container {

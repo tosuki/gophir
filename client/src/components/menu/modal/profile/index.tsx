@@ -32,7 +32,7 @@ export function ProfileModal({ toggleModal, data }: {
     toggleModal: ToggleModalFunction,
     data: ProfileModalProperties
 }) {
-    const [profile, setProfile] = useState<Profile>()
+    const [profile, setProfile] = useState<Profile | null>()
 
     useEffect(() => {
         getProfile(data.username)
@@ -47,7 +47,7 @@ export function ProfileModal({ toggleModal, data }: {
         })
         .catch((error) => {
             toggleModal()
-            console.log(result)
+            console.log(error)
         })
     }, [data.username])
 
@@ -78,7 +78,7 @@ export function ProfileModal({ toggleModal, data }: {
                             <h1>Description</h1>
                         </div>
                         <div className="profile-description-body">
-                            Hello World 
+                            { profile ? profile.description : "Loading!!" }
                         </div>
                     </div>
                 </div>

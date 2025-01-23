@@ -24,7 +24,9 @@ export async function getProfile(username: string): Promise<Result<Profile, Prof
             }
         }
 
-        return response.data.profile
+        return {
+            data: response.data.profile
+        }
     } catch (error: any) {
         if (!isCriticalError(error)) {
             return {
