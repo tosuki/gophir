@@ -35,10 +35,15 @@ export type DatabaseSelectManyWithReference <T, K> = DatabaseSelectPaginator<T> 
     select?: string[]
 }
 
+export type DatabaseSelectWithReference <T, K> = DatabaseSelectManyWithReference<T, K> & {
+    where: Partial<T>
+}
+
 export interface DatabaseProvider {
     disconnect(): Promise<void>
     selectAll<T>(table: string, paginator: DatabaseSelectPaginator<T>, select?: (keyof T)[]): Promise<T[]>
     findFirst<T>(table: string, options: DatabaseSelectOptions<T>): Promise<T | undefined>
+    findFirstWithReference<T, K>(table: string, options: DatabaseSelectManyWithReference<T, K>): Promise<any>
     save<T>(table: string, options: DatabaseSaveOptions<T>): Promise<any>
     findMany<T>(table: string, options: DatabaseSelectOptions<T>): Promise<any[]>
     delete<T>(table: string, options: DatabaseDeleteOptions<T>): Promise<void>
@@ -52,8 +57,15 @@ export class KnexPsqlProviderImpl implements DatabaseProvider {
     constructor(queryBuilder: Knex) {
         this.queryBuilder = queryBuilder
     }
-
     
+    findFirstWithReference<T, K>(table: string, options: DatabaseSelectWithReference<T, K>): Promise<any> {
+        return this.queryBuilder(table)
+            .join(options.referenceTable, options.referenceKey as string, "=", options.referenceTo as string)
+            .select(options.select ? options.select as string[] : "*")
+            .where(options.where)
+            .first()
+    }    
+
     async edit<T>(table: string, options: DatabaseEditOptions<T>): Promise<any> {
         try {
             const rows = new Promise((resolve, reject) => {
