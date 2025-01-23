@@ -9,6 +9,7 @@ import { PaperPlaneRight } from "phosphor-react"
 import { MessageComponent } from "./message"
 
 import type { Message } from "../../model/message"
+import type { Notification } from "../../model/notification"
 
 import "./styles.css"
 
@@ -55,12 +56,16 @@ export function Chat() {
             })
             console.log(messages)
         })
+    
+        socket.on("notification", (notification: Notification) => {
+            toast(notification.title)
+        })
 
         return () => {
             socket.off("connected")
             socket.off("messageReceive")
             socket.off("connection_error")
-
+            socket.off("notification")
             socket.disconnect()
         }
     }, [])
