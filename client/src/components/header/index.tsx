@@ -2,6 +2,7 @@ import { useState } from "react"
 import { Bell, User } from "phosphor-react"
 
 import { useSession } from "../../hooks/session"
+import { useProfile } from "../../hooks/profile"
 
 import { createDropdownMenu } from "../menu/dropdown"
 
@@ -12,8 +13,8 @@ import { createProfileModal } from "../menu/modal/profile"
 import "./styles.css"
 
 export function Header() {
-    const { setPassport } = useSession()
-    const [profileUsername, setProfileUsername] = useState<string>("admin")
+    const { setPassport, session } = useSession()
+    const profile = useProfile()
 
     const logoutModal = createConfirmationModal({
         message: "Are you sure you want to quit?",
@@ -22,10 +23,8 @@ export function Header() {
         },
     })
 
-    const profileModal = createProfileModal(profileUsername)
-
     const dropdownMenu = createDropdownMenu([
-        { label: "Profile", action: () => profileModal.toggleModal()},
+        { label: "Profile", action: () => profile.toggle(session.data!.username)},
         { label: "Exit", action: logoutModal.toggleModal }
     ])
 
@@ -52,7 +51,6 @@ export function Header() {
         </div>
         { logoutModal.Modal }
         { notificationModal.Modal }
-        { profileModal.Modal }
         </>
     )
 }

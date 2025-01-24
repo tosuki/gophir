@@ -50,7 +50,7 @@ export function ProfileModal({ toggleModal, data }: {
             console.log(error)
         })
     }, [data.username])
-
+    
     return (
         <div className="profile-modal-container">
             <div className="header">

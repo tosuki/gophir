@@ -2,6 +2,8 @@ import { ReactNode } from "react"
 import { Navigate } from "react-router"
 import { useSession } from "../hooks/session"
 
+import { ProfileModalProvider } from "../hooks/profile"
+
 export function Private({ children }: {
     children: ReactNode,
 }) {
@@ -11,5 +13,9 @@ export function Private({ children }: {
         return <Navigate to="/authenticate"/>
     }
 
-    return children
+    return (
+        <ProfileModalProvider>
+            { children }
+        </ProfileModalProvider>
+    )
 }

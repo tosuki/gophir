@@ -8,7 +8,7 @@ export type ModalProperties = {
 
 export type ToggleModalFunction = () => unknown
 
-export function Modal({ Content, isOpen, toggleModal }: ModalProperties & {
+export function Modal({ Content, isOpen }: ModalProperties & {
     isOpen: boolean,
     toggleModal: ToggleModalFunction
 }) {
