@@ -6,6 +6,8 @@ import { toast } from "react-hot-toast"
 
 import { Profile } from "../../../../model/profile"
 
+import { Pen } from "phosphor-react"
+
 import "./styles.css"
 
 export type ProfileModalProperties = {
@@ -51,6 +53,10 @@ export function ProfileModal({ toggleModal, data }: {
         })
     }, [data.username])
     
+    const onEditButtonClick = () => {
+        toast("Work in progress")
+    }
+
     return (
         <div className="profile-modal-container">
             <div className="header">
@@ -76,6 +82,13 @@ export function ProfileModal({ toggleModal, data }: {
                     <div className="profile-description-container">
                         <div className="profile-description-header">
                             <h1>Description</h1>
+                            <button className="edit-button" onClick={ onEditButtonClick }>
+                                <Pen 
+                                    size={30}
+                                    weight="fill"
+                                    color="var(--header-fg)"
+                                />
+                            </button>
                         </div>
                         <div className="profile-description-body">
                             { profile ? profile.description : "Loading!!" }
