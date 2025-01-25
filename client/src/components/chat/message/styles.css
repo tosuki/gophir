@@ -20,6 +20,10 @@
     border: solid 1px var(--header-bg);
 }
 
+.start .message-container .message-header {
+    cursor: pointer;
+}
+
 .start .message-container .message-header,
 .start .message-container .message-body {
     color: var(--header-bg);
@@ -27,6 +31,10 @@
 
 .end .message-container {
     background-color: var(--header-bg);
+}
+
+.end .message-container .message-header {
+    cursor: pointer;
 }
 
 .end .message-container .message-header,
