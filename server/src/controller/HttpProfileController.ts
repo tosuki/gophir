@@ -45,6 +45,15 @@ export class HttpProfileController {
                     message: error.message
                 })
             }
+            
+            if (isProfileError(error) && (
+                error.code === "invalid_profile"
+            )) {
+                return response.status(HttpResponseCode.NotFound).json({
+                    code: error.code,
+                    message: error.message,
+                })
+            }
 
             logger.error(error)
             return response.status(HttpResponseCode.InternalServerError).json({
@@ -52,6 +61,10 @@ export class HttpProfileController {
                 message: error.message,
             })
         }
+    }
+
+    async createProfile(request: Request, responnse: Response) {
+
     }
      
     async getProfile(request: Request, response: Response) {

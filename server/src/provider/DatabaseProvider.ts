@@ -35,7 +35,7 @@ export type DatabaseSelectManyWithReference <T, K> = DatabaseSelectPaginator<T> 
     select?: string[]
 }
 
-export type DatabaseSelectWithReference <T, K> = DatabaseSelectManyWithReference<T, K> & {
+export type DatabaseSelectWithReference <T, K> = Omit<DatabaseSelectManyWithReference<T, K>, keyof DatabaseSelectPaginator<T>> & {
     where: Partial<T>
 }
 
@@ -43,7 +43,7 @@ export interface DatabaseProvider {
     disconnect(): Promise<void>
     selectAll<T>(table: string, paginator: DatabaseSelectPaginator<T>, select?: (keyof T)[]): Promise<T[]>
     findFirst<T>(table: string, options: DatabaseSelectOptions<T>): Promise<T | undefined>
-    findFirstWithReference<T, K>(table: string, options: DatabaseSelectManyWithReference<T, K>): Promise<any>
+    findFirstWithReference<T, K>(table: string, options: DatabaseSelectWithReference<T, K>): Promise<any>
     save<T>(table: string, options: DatabaseSaveOptions<T>): Promise<any>
     findMany<T>(table: string, options: DatabaseSelectOptions<T>): Promise<any[]>
     delete<T>(table: string, options: DatabaseDeleteOptions<T>): Promise<void>

@@ -35,6 +35,7 @@ export class SocketEventHandler {
                 socket.emit("connected", { messages })
 
                 this.notificationUsecase.onNotification((notification) => {
+                    logger.debug(`New notification got created in the name of ${notification.target}`)
                     if (socket.session.id === notification.target) {
                         socket.emit("notification", notification)
                     }

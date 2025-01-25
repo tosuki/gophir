@@ -20,21 +20,19 @@ export class ProfileUsecase {
 
     public async setProfile(authorId: number, description: string): Promise<Profile> {
         try {
-            const profileSet = await this.profileRepository.editProfile(authorId, {
-                description
-            })
-
+            const profileSet = await this.profileRepository.editProfile(authorId, { description })
+            
             if (!profileSet) {
-                return await this.createProfile(authorId,  description)
-            } 
-
+                throw new ProfileError("invalid_profile", "There is no profile created for that id", profileSet)
+            }
+            
             return profileSet
         } catch (error: any) {
             throw error
         }
     }
 
-    private async createProfile(authorId: number, description: string) {
+    private async createProfile(authorId: number, description: string): Promise<Profile> {
         try {
             const profile = await this.profileRepository.save(authorId, description)
             
