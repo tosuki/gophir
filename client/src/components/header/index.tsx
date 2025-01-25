@@ -8,7 +8,6 @@ import { createDropdownMenu } from "../menu/dropdown"
 
 import { createNotificationModal } from "../menu/modal/notification"
 import { createConfirmationModal } from "../menu/modal/confirmation"
-import { createProfileModal } from "../menu/modal/profile"
 
 import "./styles.css"
 
@@ -24,7 +23,9 @@ export function Header() {
     })
 
     const dropdownMenu = createDropdownMenu([
-        { label: "Profile", action: () => profile.toggle(session.data!.username)},
+        { label: "Profile", action: () => {
+            profile.toggle(session.data!.username)
+        }},
         { label: "Exit", action: logoutModal.toggleModal }
     ])
 
