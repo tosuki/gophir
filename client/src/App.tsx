@@ -16,7 +16,7 @@ export function App() {
                 <RouterProvider router={ router } />
             </NotificationProvider>
             <Toaster 
-                position="top-right"
+                position="top-center"
             />
         </SessionProvider>
     )

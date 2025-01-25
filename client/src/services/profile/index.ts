@@ -40,7 +40,7 @@ export async function getProfile(username: string): Promise<Result<Profile, Prof
         return {
             error: {
                 code: "unhandled",
-                message: "An unhandled error occurred",
+                message: error.message,
                 cause: error,
             }
         }
