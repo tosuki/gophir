@@ -3,6 +3,7 @@ import { DatabaseProvider } from "../../provider/DatabaseProvider"
 
 import { Profile } from "../../model/Profile"
 import { User } from "../../model/User"
+import {ProfileError} from "src/library/error/ProfileError"
 
 export class ProfileRepositoryImpl implements ProfileRepository {
     private queryBuilder: DatabaseProvider
@@ -19,7 +20,7 @@ export class ProfileRepositoryImpl implements ProfileRepository {
 
     async getByAuthorId(authorId: number): Promise<Profile | null> {
         try {
-            const { createdAt, username, id, ...profile  } = await this.queryBuilder.findFirstWithReference<Profile, User>("profile", {
+            const columns = await this.queryBuilder.findFirstWithReference<Profile, User>("profile", {
                 referenceTable: "users",
                 referenceKey: "authorId",
                 referenceTo: "id",
@@ -28,15 +29,17 @@ export class ProfileRepositoryImpl implements ProfileRepository {
                 },
                 select: ["profile.*", "users.id", "users.createdAt", "users.id", "users.username"]
             })
-
-            return {
+            
+            return columns ? {
                 author: {
-                    id,
-                    username,
-                    createdAt
+                    id: columns.id,
+                    username: columns.username,
+                    createdAt: columns.createdAt
                 },
-                ...profile,
-            }
+                authorId: columns.id,
+                profileId: columns.profileId,
+                description: columns.description,
+            } : null
         } catch (error: any) {
             throw error
         }

@@ -25,7 +25,8 @@ export const applyRouter = (authUsecase: AuthUseCase, notificationUsecase: Notif
     app.post("/api/auth/authenticate", httpAuthController.authenticate.bind(httpAuthController))
     app.post("/api/auth/register", httpAuthController.register.bind(httpAuthController))
     app.get("/api/session/check", httpAuthController.getSession.bind(httpAuthController))
-
+    
+    app.post("/api/profile", httpProfileController.createProfile.bind(httpProfileController))
     app.get("/api/profile/:username", httpProfileController.getProfile.bind(httpProfileController))
 
     app.get("/api/notifications/all", httpNotificationController.getNotifications.bind(httpNotificationController))

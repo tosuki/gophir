@@ -1,8 +1,9 @@
 import { User } from "./User"
 
 export type Profile = {
+    profileId: number
     authorId: number
     description: string
-    author: User
+    author: Omit<User, "password">
 }
 

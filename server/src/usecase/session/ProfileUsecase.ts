@@ -32,7 +32,7 @@ export class ProfileUsecase {
         }
     }
 
-    private async createProfile(authorId: number, description: string): Promise<Profile> {
+    async createProfile(authorId: number, description: string): Promise<Profile> {
         try {
             const profile = await this.profileRepository.save(authorId, description)
             
@@ -56,12 +56,16 @@ export class ProfileUsecase {
     async getProfile(username: string): Promise<Profile> {
         try {
             const user = await this.userRepository.getByUsername(username)
-
+            
             if (!user) {
                    throw new ProfileError("invalid_username", "That user doesn't exist in our database") 
             }
 
             const profile = await this.profileRepository.getByAuthorId(user.id)
+            
+            if (!profile) {
+                throw new ProfileError("invalid_profile", "The user doesn't have a profile registered in our database")
+            }
 
             return profile       
         } catch (error: any) {
