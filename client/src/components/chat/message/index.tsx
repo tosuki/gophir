@@ -16,7 +16,7 @@ export function MessageComponent(properties: MessageComponentProperties) {
         <div className={`message-row ${isMine ? "end" : "start"}`}>
             <div className="message-container">
             <div className="message-header" onClick={() => {
-                profile.toggle("admin")
+                profile.toggle(properties.author.username)
             }}>
                     <b>{properties.author.username}</b>
                 </div>

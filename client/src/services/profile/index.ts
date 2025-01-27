@@ -7,6 +7,7 @@ import { isCriticalError } from "../../lib/utils"
 
 export type ProfileErrors =
     | "invalid_username"
+    | "invalid_profile"
     | "expired_token"
     | "invalid_token"
     | "unhandled"

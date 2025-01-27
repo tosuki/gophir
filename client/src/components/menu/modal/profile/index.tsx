@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import { useSession } from "../../../../hooks/session"
 
 import { getProfile } from "../../../../services/profile"
 import { createModal, ToggleModalFunction } from "../prototype"
@@ -34,15 +35,27 @@ export function ProfileModal({ toggleModal, data }: {
     toggleModal: ToggleModalFunction,
     data: ProfileModalProperties
 }) {
+    const { session, setPassport } = useSession()
     const [profile, setProfile] = useState<Profile | null>()
 
     useEffect(() => {
         getProfile(data.username)
         .then((result) => {
             if (result.error) {
-                console.log(result.error)
-                toggleModal()
-                return toast.error(result.error.message)
+                switch (result.error.code) {
+                    case "invalid_profile":
+                        return setProfile({
+                            description: "There should be something here",
+                            author: {
+                                id: session.data!.id,
+                                username: session.data!.username,
+                                createdAt: session.data!.createdAt
+                            }
+                        })
+                    default:
+                        console.log(result.error)
+                        return toast.error(result.error.message)
+                }
             }
             
             setProfile(result.data)

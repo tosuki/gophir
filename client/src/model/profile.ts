@@ -1,4 +1,6 @@
+import { User } from "./user"
+
 export type Profile = {
     description: string
-    author: number
+    author: Omit<User, "password">
 }
