@@ -52,7 +52,9 @@ export function ProfileModal({ toggleModal, data }: {
     const [profile, setProfile] = useState<Profile | null>()
 
 
-    const descriptionModal = createDescriptionModal()
+    const descriptionModal = createDescriptionModal({
+        toggleProfileModal: toggleModal
+    })
 
     useEffect(() => {
         getProfile(data.username)
