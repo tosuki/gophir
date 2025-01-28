@@ -2,10 +2,14 @@ import { useState, useEffect } from "react"
 import { useSession } from "../../../../hooks/session"
 
 import { getProfile } from "../../../../services/profile"
+
 import { createModal, ToggleModalFunction } from "../prototype"
+import { createDescriptionModal } from "../description"
+
 import { toast } from "react-hot-toast"
 
 import { Profile } from "../../../../model/profile"
+import { Session } from "../../../../model/session"
 
 import { Pen } from "phosphor-react"
 
@@ -31,12 +35,24 @@ export function ProfileInfoWindow(properties: {
     )
 }
 
+function isSessionProfile(session?: Session, profile?: Profile) {
+    if (!session || !profile) {
+        return false
+    }
+    
+    return session.id === profile.author.id
+}
+
+
 export function ProfileModal({ toggleModal, data }: {
     toggleModal: ToggleModalFunction,
     data: ProfileModalProperties
 }) {
-    const { session, setPassport } = useSession()
+    const { session } = useSession()
     const [profile, setProfile] = useState<Profile | null>()
+
+
+    const descriptionModal = createDescriptionModal()
 
     useEffect(() => {
         getProfile(data.username)
@@ -47,7 +63,7 @@ export function ProfileModal({ toggleModal, data }: {
                         return setProfile({
                             description: "There should be something here",
                             author: {
-                                id: session.data!.id,
+                                id: session.data!.username !== data.username ? -1 : session.data!.id,
                                 username: session.data!.username,
                                 createdAt: session.data!.createdAt
                             }
@@ -58,6 +74,7 @@ export function ProfileModal({ toggleModal, data }: {
                 }
             }
             
+            toast("It fell here") 
             setProfile(result.data)
         })
         .catch((error) => {
@@ -67,10 +84,21 @@ export function ProfileModal({ toggleModal, data }: {
     }, [data.username])
     
     const onEditButtonClick = () => {
-        toast("Work in progress")
+        descriptionModal.toggleModal()
+    }
+
+
+    if (!session.data || !profile) {
+        return (
+            <div className="profile-modal-container">
+                <h1>Loading</h1>
+            </div>
+        )
     }
 
     return (
+        <>
+        { descriptionModal.Modal }
         <div className="profile-modal-container">
             <div className="header">
                 <h1>Profile</h1>
@@ -95,13 +123,13 @@ export function ProfileModal({ toggleModal, data }: {
                     <div className="profile-description-container">
                         <div className="profile-description-header">
                             <h1>Description</h1>
-                            <button className="edit-button" onClick={ onEditButtonClick }>
+                            { isSessionProfile(session.data, profile) && <button className="edit-button" onClick={ onEditButtonClick }>
                                 <Pen 
                                     size={30}
                                     weight="fill"
                                     color="var(--header-fg)"
                                 />
-                            </button>
+                            </button>}
                         </div>
                         <div className="profile-description-body">
                             { profile ? profile.description : "Loading!!" }
@@ -110,6 +138,7 @@ export function ProfileModal({ toggleModal, data }: {
                 </div>
             </div>
         </div>
+        </>
     )
 }
 
