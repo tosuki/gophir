@@ -2,9 +2,14 @@ import { useState } from "react"
 import { useSession } from "../../../../hooks/session"
 
 import { createModal, ToggleModalFunction } from "../prototype"
-import { setProfile } from "../../../../services/profile"
+import { createProfile, setProfile } from "../../../../services/profile"
 
 import { toast } from "react-hot-toast"
+
+import {
+    UNHANDLED_ERROR_MESSAGE,
+    INVALID_DESCRIPTION_ERROR_INPUT
+} from "../../../../lib/error/errors-message"
 
 import "./styles.css"
 
@@ -19,36 +24,40 @@ export function DescriptionModal({ data, toggleModal }: {
     const { session, setPassport } = useSession()
     const [description, setDescription] = useState<string>("")
     
-    const onSubmit = () => {
+    const onSubmit = async () => {
         if (!description) {
-            return toast.error("Oops! It looks like you forgot to fill in the description. Please take a moment to provide the necessary details before proceeding")
+            return toast.error(INVALID_DESCRIPTION_ERROR_INPUT)
         }
 
-
-        setProfile(session.passport, description)
-        .then((result) => {
-            console.log(result)
+        try {
+            const result = await setProfile(session.passport, description)
+            
             if (result.error) {
-                switch (result.error.code) {
-                    case "conflict":
-                        return toast.error("The user already got a profile, you cant add one more!")
+                switch(result.error.code) {
+                    case "invalid_profile":
+                        const createdProfile = await createProfile(session.passport, description)
+
+                        if (createdProfile.error) {
+                            console.log(createdProfile.error)
+                            return toast.error(UNHANDLED_ERROR_MESSAGE)
+                        }
+                        break
                     case "invalid_token":
                     case "expired_token":
                         setPassport("")
-                        return toast.error("Your session expired!")
+                        return data!.toggleProfileModal()
                     default:
                         console.log(result.error)
-                        return toast.error(result.error.message)
+                        return toast.error(UNHANDLED_ERROR_MESSAGE)
                 }
-            }
+            }    
         
-            data!.toggleProfileModal()    
-        })
-        .catch((error) => {
+            data!.toggleProfileModal()
+        } catch (error: any) {
             console.log(error)
-            toast.error(error.message)
-            toggleModal()
-        })
+            toast.error(UNHANDLED_ERROR_MESSAGE)
+            return toggleModal()
+        }
     }
 
     return (

@@ -76,7 +76,6 @@ export function ProfileModal({ toggleModal, data }: {
                 }
             }
             
-            toast("It fell here") 
             setProfile(result.data)
         })
         .catch((error) => {

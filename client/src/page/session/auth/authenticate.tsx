@@ -6,6 +6,12 @@ import { toast } from "react-hot-toast"
 
 import { useNavigate } from "react-router"
 
+import {
+    INVALID_PASSWORD_AUTH_ERROR_MESSAGE,
+    INVALID_USERNAME_AUTH_ERROR_MESSAGE,
+    UNHANDLED_ERROR_MESSAGE
+} from "../../../lib/error/errors-message"
+
 export function AuthenticatePage() {
     const navigate = useNavigate()
 
@@ -19,9 +25,9 @@ export function AuthenticatePage() {
                 if (result.error) {
                     switch (result.error.code) {
                         case "invalid_password":
-                            return toast.error("Invalid password")
+                            return toast.error(INVALID_PASSWORD_AUTH_ERROR_MESSAGE)
                         case "invalid_username":
-                            return toast.error("Invalid username")
+                            return toast.error(INVALID_USERNAME_AUTH_ERROR_MESSAGE)
                     }
 
                     console.log(result.error.cause)
@@ -32,7 +38,7 @@ export function AuthenticatePage() {
                 navigate("/")
             }).catch((error) => {
                 console.log(error)
-                toast.error(`Failed to authenticate due to ${error.code || error.message}`)
+                toast.error(UNHANDLED_ERROR_MESSAGE)
             })
     }
 

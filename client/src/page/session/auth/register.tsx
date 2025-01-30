@@ -5,6 +5,7 @@ import { createSessionPage } from "./prototype"
 import { register } from "../../../services/auth"
 
 import { toast } from "react-hot-toast"
+import { UNHANDLED_ERROR_MESSAGE } from "../../../lib/error/errors-message"
 
 export function RegisterPage() {
     const navigate = useNavigate()
@@ -23,7 +24,7 @@ export function RegisterPage() {
             toast.error(result.error.message)
         }).catch((error) => {
             console.log(error)
-            toast.error(`Unhandled error occurred, check the console for more information`)
+            toast.error(UNHANDLED_ERROR_MESSAGE)
         })
     }
 
