@@ -68,7 +68,7 @@ export class KnexPsqlProviderImpl implements DatabaseProvider {
 
     async edit<T>(table: string, options: DatabaseEditOptions<T>): Promise<any> {
         try {
-            const rows = new Promise((resolve, reject) => {
+            const rows = await new Promise((resolve, reject) => {
                 this.queryBuilder(table)
                     .returning(options.returning ? options.returning as string[] : "*")
                     .where(options.where)

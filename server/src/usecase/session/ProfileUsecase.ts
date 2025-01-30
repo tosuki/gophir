@@ -6,6 +6,8 @@ import { Profile } from "../../model/Profile"
 import { ProfileError } from "../../library/error/ProfileError"
 import { isDatabaseError } from "../../library/error/DatabaseError"
 
+import { logger } from "../../library/logger"
+
 export class ProfileUsecase {
     private profileRepository: ProfileRepository
     private userRepository: UserRepository

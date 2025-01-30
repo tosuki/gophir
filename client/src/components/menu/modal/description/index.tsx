@@ -24,10 +24,14 @@ export function DescriptionModal({ data, toggleModal }: {
             return toast.error("Oops! It looks like you forgot to fill in the description. Please take a moment to provide the necessary details before proceeding")
         }
 
+
         setProfile(session.passport, description)
         .then((result) => {
+            console.log(result)
             if (result.error) {
                 switch (result.error.code) {
+                    case "conflict":
+                        return toast.error("The user already got a profile, you cant add one more!")
                     case "invalid_token":
                     case "expired_token":
                         setPassport("")

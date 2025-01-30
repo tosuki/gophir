@@ -10,6 +10,7 @@ export type ProfileErrors =
     | "invalid_profile"
     | "expired_token"
     | "invalid_token"
+    | "conflict"
     | "unhandled"
 
 export async function getProfile(username: string): Promise<Result<Profile, ProfileErrors>> {
@@ -48,9 +49,47 @@ export async function getProfile(username: string): Promise<Result<Profile, Prof
     }
 }
 
+export async function createProfile(passport: string, description: string): Promise<Result<Profile, ProfileErrors>> {
+    try {
+        const response = await server.post("/api/profile/create", { description }, {
+            headers: { Authorization: passport }
+        })
+
+        if (!response.data || (response.data && response.data.code !== "created")) {
+            return {
+                error: {
+                    code: "unhandled",
+                    message: "Unhandled response code",
+                    cause: response.data,
+                }
+            }
+        }
+
+        return {
+            data: response.data.profile,
+        }
+    } catch (error: any) {
+        if (!isCriticalError(error)) {
+            return {
+                error: {
+                    code: error.response?.data.code,
+                    message: error.response?.data.message,
+                }
+            }
+        }
+
+        return {
+            error: {
+                code: "unhandled",
+                message: error.message,
+            }
+        }
+    }
+}
+
 export async function setProfile(passport: string, description: string): Promise<Result<Profile, ProfileErrors>> {
     try {
-        const response = await server.post("/api/profile", {
+        const response = await server.post("/api/profile/edit", {
             description,
         }, {
             headers: {

@@ -53,7 +53,7 @@ export function ProfileModal({ toggleModal, data }: {
 
 
     const descriptionModal = createDescriptionModal({
-        toggleProfileModal: toggleModal
+        toggleProfileModal: toggleModal,
     })
 
     useEffect(() => {
