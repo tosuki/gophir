@@ -1,50 +1,68 @@
-# React + TypeScript + Vite
+# Gophir Client 🖥️
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the React-based frontend for the Gophir webchat application. It provides a real-time messaging interface, user profile management, and a notification system.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Features
 
-## Expanding the ESLint configuration
+- **Responsive Design**: Modern and clean UI.
+- **Real-time Messaging**: Instant updates via Socket.io.
+- **Authentication**: Secure login/registration with JWT storage.
+- **Profile View**: View and edit user profiles.
+- **Notification System**: Toast notifications for real-time events.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+---
 
-- Configure the top-level `parserOptions` property like this:
+## 🛠️ Tech Stack
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+- **React**: Modern component-based library.
+- **Vite**: Ultra-fast build tool for React.
+- **TypeScript**: Static typing for more reliable code.
+- **React Router**: For client-side routing.
+- **Socket.io Client**: For real-time communication.
+- **Phosphor React**: For beautiful icons.
+- **Custom CSS**: For efficient and modular styling.
+
+---
+
+## 🏗️ Getting Started
+
+### 1. Install Dependencies
+```bash
+yarn install
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+### 2. Configure Environment Variables
+Create a `.env` file from the example:
+```bash
+cp .env.example .env
 ```
+Update `VITE_SERVER_BASE_URL` and `VITE_CHAT_SOCKET_URL` to point to your backend service (default: `http://localhost:3000`).
+
+### 3. Start the Development Server
+```bash
+yarn dev
+```
+
+---
+
+## 📂 Project Structure
+
+- `src/components`: UI elements (chat, header, inputs, modals).
+- `src/hooks`: Custom React hooks for session, sockets, and state management.
+- `src/page`: High-level page components (Home, Auth, Profile).
+- `src/services`: API and Socket.io clients.
+- `src/router`: Routing configuration.
+
+---
+
+## 🛠️ Development Scripts
+
+- `yarn dev`: Starts the Vite development server.
+- `yarn build`: Builds the app for production.
+- `yarn lint`: Runs ESLint for code quality checks.
+- `yarn preview`: Previews the production build locally.
+
+---
+© 2025 Gophir Team

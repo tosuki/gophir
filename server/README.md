@@ -1,62 +1,96 @@
-# Gophir API
-This repository stores the source code of the Gophir API. Here you can find out how the authentication and the client/server communication works.
+# Gophir API ⚙️
 
-## Auth
-The auth was made using JWT as a passport token and those are the api routes:
+This is the backend service for the Gophir webchat. It provides HTTP endpoints for authentication and user management, along with real-time communication via WebSockets.
 
-### /api/auth/authenticate
-The authenticate route requires the following request body:
-```json
-{
-    "username": "the username of the user",
-    "password": "the password"
-}
-```
+---
 
-If the authenticate request gets authorized, you will receive this response:
-```json
-{//status = accepted
-    "code": "accepted",
-    "passport": "your passport"
-}
-```
-Otherwise, if an error occur and you gets refused, you may receive those errors:
-- In case of your username being invalid:
-```json
-{//status = unauthorized
-    "code": "invalid_username",
-    "message": "a more detailed explanation"
-}
-```
-- In case of your password is wrong:
-```json
-{//status = unauthorized
-    "code": "invalid_password",
-    "message": "a more detailed explanation"
-}
-```
+## 🔑 Authentication
 
-### /api/auth/register
-The register route requires the following request body:
-```json
-{
-    "username": "the username of the user",
-    "password": "the password"
-}
-```
+Gophir uses JWT (JSON Web Tokens) for secure session management.
 
-If the register request gets authorized, you will receive this response:
-```json
-{//status = created
-    "code": "created",
-    "passport": "your passport"
-}
-```
-Otherwise, if an error occur and you gets refused, you may receive those errors:
-- In case of your username is occupied by another user:
-```json
-{//status = unauthorized
-    "code": "invalid_username",
-    "message": "a more detailed explanation"
-}
-```
+### `POST /api/auth/register`
+Creates a new user account.
+- **Request Body**:
+  ```json
+  {
+      "username": "johndoe",
+      "password": "securepassword"
+  }
+  ```
+- **Response** (201 Created):
+  ```json
+  {
+      "code": "created",
+      "passport": "JWT_TOKEN"
+  }
+  ```
+
+### `POST /api/auth/authenticate`
+Logs in an existing user.
+- **Request Body**:
+  ```json
+  {
+      "username": "johndoe",
+      "password": "securepassword"
+  }
+  ```
+- **Response** (200 OK):
+  ```json
+  {
+      "code": "accepted",
+      "passport": "JWT_TOKEN"
+  }
+  ```
+
+### `GET /api/session/check`
+Validates the current session token.
+- **Header**: `Authorization: Bearer <TOKEN>`
+- **Response** (200 OK): Returns user session data.
+
+---
+
+## 👤 Profile Management
+
+### `GET /api/profile/:username`
+Retrieves a user's profile information.
+
+### `POST /api/profile/create`
+Initializes a profile for a new user.
+
+### `POST /api/profile/edit`
+Updates user profile details (e.g., description).
+
+---
+
+## 🔔 Notifications
+
+### `GET /api/notifications/all`
+Fetches all persistent notifications for the authenticated user.
+
+### `POST /api/notifications/notify`
+Triggers a notification (internal use).
+
+---
+
+## 💬 Real-time Communication (WebSockets)
+
+WebSocket communication is handled via [Socket.io](https://socket.io/).
+
+- **Connection**: Requires a valid JWT token passed during the handshake.
+- **Events**:
+  - `connected`: Emitted by server upon successful connection, sends recent message history.
+  - `message:receive`: Client emits this to send a message.
+  - `notification`: Server emits this to send real-time alerts.
+
+---
+
+## 🛠️ Development
+
+### Scripts
+- `yarn build`: Compiles TypeScript to JavaScript.
+- `yarn start`: Runs the compiled server.
+- `yarn migrate`: Runs database migrations using Knex.
+- `yarn lint`: Runs ESLint for code quality.
+
+---
+© 2025 Gophir Team
