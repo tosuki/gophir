@@ -129,4 +129,4 @@ docker-compose up -d
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ---
-Developed with ❤️ by [okaabe](https://github.com/okaabe)
+Developed with ❤️ by [tosuki](https://github.com/tosuki)
